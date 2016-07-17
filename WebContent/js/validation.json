@@ -1,0 +1,5 @@
+INPUTFIELDVALIDATIONS:{
+username: [],
+password:[],
+email:[]
+}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+
+<script src="js/jquery.1.11.2.min.js"></script>
+<script src="js/jquery-ui.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src = "js/common.js"></script>
+<script src = "js/manual.test.js"></script>
+<script src = "js/Data.js"></script>
+<link rel="stylesheet" href="css/bootstrap.css">  
+<link rel="stylesheet" href="css/add.rule.css">  
+
+</head>
+<body onload = "initializeDragDrop()">
+
+<ul id="sortable1" class="connectedSortable">
+  <li class="ui-state-default cursorpointer" id = "1" >Login Graph</li>
+  <li class="ui-state-default cursorpointer" id = "2">Add to Cart Graph</li>
+  <li class="ui-state-default cursorpointer" id = "3">Checkout Graph</li>
+  
+</ul>
+ 
+<ul id="sortable2" class="connectedSortable">
+  
+</ul>
+ 
+<button onclick = "saveTotalGraph()"> Generate Test Case </button>
+
+</body>
+</html>

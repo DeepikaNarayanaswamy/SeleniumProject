@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="js/go.js"></script>
+<script src="js/add.rule.js"></script>
+<script src="js/jquery.1.11.2.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src = "js/common.js"></script>
+<script src = "js/graphpage.js"></script>
+<script src = "js/Data.js"></script>
+<script id="code">
+</script>
+</head>
+<body onload = "initNewGraph()">
+  <div id = "newGraph" style="width:100%; white-space:nowrap;">
+    <span style="display: inline-block; vertical-align: top; padding: 5px; width:100px">
+      <div id= "newPallete" style="background-color: Snow; border: solid 1px gray; height: 480px"></div>
+    </span>
+    <span style="display: inline-block; vertical-align: top; padding: 5px; width:85%">
+      <div id="newDiv" style="background-color: Snow; border: solid 1px gray; height: 480px"></div>
+    </span>
+   
+  <div> 
+  <button id="SaveButton" onclick="saveNewGraph()">Save</button>
+  <button onclick="loadLogin()">Load</button>
+  </div>
+  </div>
+</body>
+</html>

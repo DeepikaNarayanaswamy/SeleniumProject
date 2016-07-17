@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="js/go.js"></script>
+<script src="js/add.rule.js"></script>
+<script src="js/jquery.1.11.2.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src = "js/common.js"></script>
+<script src = "js/graphpage.js"></script>
+<script src = "js/Data.js"></script>
+<script id="code">
+</script>
+</head>
+<body onload = "initLogin()">
+Edit Graph Page
+Select the graph to edit<select id = "graphSelect" onchange="changeGraph()">
+	<option value = "1">Login Graph</option>
+	<option value = "2">Add to Cart Graph</option>
+	<option value = "3">Checkout Graph</option>
+</select>
+  <div id = "loginGraph" style="width:100%; white-space:nowrap;">
+    <span style="display: inline-block; vertical-align: top; padding: 5px; width:100px">
+      <div id="loginPallete" style="background-color: Snow; border: solid 1px gray; height: 480px"></div>
+    </span>
+    <span style="display: inline-block; vertical-align: top; padding: 5px; width:85%">
+      <div id="loginDiv" style="background-color: Snow; border: solid 1px gray; height: 480px"></div>
+    </span>
+   
+  <div> 
+  <button id="SaveButton" onclick="saveLogin()">Save</button>
+  <button onclick="loadLogin()">Load</button>
+  </div>
+  </div>
+  
+  <div id = "registerGraph" style="width:100%; white-space:nowrap;">
+    <span style="display: inline-block; vertical-align: top; padding: 5px; width:100px">
+      <div id="registerPallete" style="background-color: Snow; border: solid 1px gray; height: 480px"></div>
+    </span>
+    <span style="display: inline-block; vertical-align: top; padding: 5px; width:85%">
+      <div id="registerDiv" style="background-color: Snow; border: solid 1px gray; height: 480px"></div>
+    </span>
+    <div>
+     <button id="SaveButton" onclick="saveRegister()">Save</button>
+  <button onclick="loadRegister()">Load</button>
+  </div>
+  </div>
+  
+    <div id = "checkoutGraph" style="width:100%; white-space:nowrap;">
+    <span style="display: inline-block; vertical-align: top; padding: 5px; width:100px">
+      <div id="checkoutPallete" style="background-color: Snow; border: solid 1px gray; height: 480px"></div>
+    </span>
+    <span style="display: inline-block; vertical-align: top; padding: 5px; width:85%">
+      <div id="checkoutDiv" style="background-color: Snow; border: solid 1px gray; height: 480px"></div>
+    </span>
+    <div>
+     <button id="SaveButton" onclick="saveCheckout()">Save</button>
+  <button onclick="loadCheckout()">Load</button>
+  </div>
+  </div>
+  
+  
+  
+  <button onclick="layout()">Re-layout Diagram</button>
+  
+<button onclick = "saveTotalGraph()" > Save Full Graph </button>
+</body>
+</html>
