@@ -180,7 +180,7 @@ public class MBTHelper {
 		
 
 		try (FileOutputStream outputStream = new FileOutputStream(
-				QueryConstants.FILE_LOCATION+req.getFileName()+".xls")) {
+				QueryConstants.FILE_LOCATION+req.getFileName()+".xlsx")) {
 			workbook.write(outputStream);
 			System.out.println("writing to file");
 		} catch (FileNotFoundException e) {

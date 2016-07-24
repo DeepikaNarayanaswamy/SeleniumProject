@@ -15,4 +15,5 @@ public class QueryConstants {
 	public static final String GET_TEST_STEP_ON_REQ_ID = "SELECT DESCRIPTION FROM TEST_STEP WHERE REQUIREMENT_ID = ?";
 	public static final String GET_VALIDATION_RULES_ON_ID = "SELECT RULE_DESCRIPTION FROM VALIDATION_RULE WHERE FIELD_ID = ?";
 	public static final String FILE_LOCATION = "C:/Users/user/Desktop/";
+	public static final String GET_USERID_PASSWORD = "SELECT USER_ID,PASSWORD,ROLE,LAST_LOGIN FROM USER WHERE USER_ID = ? AND PASSWORD = ?";
 }

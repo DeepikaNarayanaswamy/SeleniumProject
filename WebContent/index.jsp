@@ -1,4 +1,7 @@
 <%@page import="org.apache.jasper.tagplugins.jstl.core.Import"%>
+<%@page language="java" session="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+	
 <html>
 	<head>
 		<title>Test Modulate - Model based Testing</title>
@@ -13,7 +16,7 @@
 <script src = "assets/js/skel.min.js"></script>
 <script src = "assets/js/util.js"></script>
 <script src = "assets/js/main.js"></script>
-
+<link rel="stylesheet" href="css/styles.css">
 <link rel="stylesheet" href="css/font-awesome.css">
 
 <link rel="stylesheet" href="css/bootstrap.css">
@@ -29,13 +32,13 @@
 
   <script data-jsfiddle="common" src="dist/handsontable.js"></script>
 
-
-
   <link data-jsfiddle="common" rel="stylesheet" media="screen" href="dist/handsontable.css">
 	</head>
-	
 	<body onload = "init()">
-
+	<header>
+	<%@ include file = "jsp/Header.jsp" %>
+	<%= session.getAttribute("username") %>
+	</header>
 		Sidebar
 			<section id="sidebar">
 				<div class="inner">
