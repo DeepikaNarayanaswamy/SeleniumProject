@@ -29,7 +29,7 @@ public class MBTHelper {
 
 	static List<TestStep> testStepsFinal = new ArrayList<TestStep>();
 	static boolean startFound = false;
-	public static void writeTestCases(List<TestStep> steps, Requirement req) {
+	public static void writeTestCases(List<TestStep> steps, Requirement req, String fileLocation) {
 
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		XSSFSheet sheet = workbook.createSheet("Test Case Sheet");
@@ -180,7 +180,7 @@ public class MBTHelper {
 		
 
 		try (FileOutputStream outputStream = new FileOutputStream(
-				QueryConstants.FILE_LOCATION+req.getFileName()+".xlsx")) {
+				fileLocation+req.getFileName()+".xlsx")) {
 			workbook.write(outputStream);
 			System.out.println("writing to file");
 		} catch (FileNotFoundException e) {
@@ -193,7 +193,7 @@ public class MBTHelper {
 
 	}
 
-	public static List<TestStep> getAllStepsForRequirement(Requirement req) {
+	public static List<TestStep> getAllStepsForRequirement(Requirement req,String fileLocation) {
 		
 		try {
 				
@@ -208,7 +208,7 @@ public class MBTHelper {
 							.getStepsonMainReqId(step.getReq_id());
 					interReq.setTestSteps(intermediateSteps);
 					// System.out.println("intermediate step size"+req.getTestSteps().size());
-					getAllStepsForRequirement(interReq);
+					getAllStepsForRequirement(interReq,fileLocation);
 
 				} else {
 					if (!startFound)
@@ -220,14 +220,14 @@ public class MBTHelper {
 			ex.printStackTrace();
 		}
 
-		writeTestCases(testStepsFinal, req);
+		writeTestCases(testStepsFinal, req,fileLocation);
 		return testStepsFinal;
 	}
 
 	public static void main(String[] args) {
 		Requirement reqa = new Requirement();
 		reqa.setTestSteps(RequirementsDAO.getStepsonMainReqId(9893));
-		List<TestStep> steps = getAllStepsForRequirement(reqa);
+		//List<TestStep> steps = getAllStepsForRequirement(reqa);
 
 	}
 

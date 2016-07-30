@@ -9,8 +9,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.mbt.common.dao.ConfigDAO;
 import com.mbt.common.dao.RequirementsDAO;
+import com.mbt.common.dao.SprintDAO;
 import com.mbt.common.dtos.Requirement;
+import com.mbt.common.dtos.Sprint;
 import com.mbt.helper.MBTHelper;
 
 @Path("/requirements")
@@ -36,12 +39,36 @@ public class RequirementsService {
 			RequirementsDAO.insertTestStep(requirement.getTestSteps().get(i));
 			
 		}
+		String fileLocationtoSave = ConfigDAO.getFileLocation();
 		// This function will be used to write to the xl file
-		MBTHelper.getAllStepsForRequirement(requirement);
+		MBTHelper.getAllStepsForRequirement(requirement,fileLocationtoSave);
 		}catch(Exception ex){
 			ex.printStackTrace();
 			status = "error :" + ex.getMessage();
 		}
 		return status;
+	}
+	@GET
+	@Path("/getNextReqId")
+	public String getRequirementId(){
+		int req_id = 0;
+		try{
+		int i;
+		
+		req_id = RequirementsDAO.getNextReqId();
+		
+		}catch(Exception ex){
+			ex.printStackTrace();
+			
+		}
+		return req_id+"";
+	}
+	
+
+	@GET
+	@Path("/getSprints")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Sprint> getAllSprints(){
+		return SprintDAO.getAllSprints();
 	}
 }

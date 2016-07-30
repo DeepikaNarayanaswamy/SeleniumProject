@@ -9,6 +9,20 @@ public class Requirement {
 	private String description;
 	private List<TestStep> testSteps;
 	private String fileName;
+	private Integer sprintId;
+	private String priority;
+	public Integer getSprintId() {
+		return sprintId;
+	}
+	public void setSprintId(Integer sprintId) {
+		this.sprintId = sprintId;
+	}
+	public String getPriority() {
+		return priority;
+	}
+	public void setPriority(String priority) {
+		this.priority = priority;
+	}
 	public String getFileName() {
 		return fileName;
 	}

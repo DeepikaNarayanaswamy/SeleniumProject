@@ -25,6 +25,8 @@ public class RequirementsDAO {
 		ps.setInt(1, requirement.getId().intValue());
 		ps.setString(2, requirement.getTitle());
 		ps.setString(3,requirement.getDescription());
+		ps.setString(4, requirement.getPriority());
+		ps.setInt(5,requirement.getSprintId());
 		ps.executeUpdate();
 		}catch(SQLException ex){
 			ex.printStackTrace();
@@ -145,5 +147,43 @@ public class RequirementsDAO {
 		
 	}
 	
+	/*
+	 * Method that returns the next req.id 
+	 */
+	public static int getNextReqId(){
+		
+		Connection con = MySQLConnection.getConnection();
+		int req_id = 0;
+		
+		try{
+		
+			PreparedStatement stmt = con.prepareStatement(QueryConstants.GET_NEXT_REQ_ID);
+			 
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()){
+				
+				req_id = rs.getInt(1);
+				
+			}
+		
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return req_id;
+		
+	}
+
+
+
 	
 }

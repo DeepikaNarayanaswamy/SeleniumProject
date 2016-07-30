@@ -8,28 +8,31 @@ import java.sql.SQLException;
 import com.mbt.common.constants.QueryConstants;
 import com.mbt.helper.MySQLConnection;
 
-public class UserDAO {
+public class ConfigDAO {
 
-	public String checkLogin(String uname, String password) {
-		String role = "success";
+	// This method is used to get the file location of the xl
+	public static String getFileLocation(){
+		
 		Connection con = MySQLConnection.getConnection();
-		try {
-			PreparedStatement ps = con
-					.prepareStatement(QueryConstants.GET_USERID_PASSWORD);
-
-			ps.setString(1, uname);
-			ps.setString(2, password);
-			ResultSet rs = ps.executeQuery();
+		String fileLocation  = null;
+		
+		try{
+		
+			PreparedStatement stmt = con.prepareStatement(QueryConstants.GET_XL_LOCATION);
+			 
+			ResultSet rs = stmt.executeQuery();
 			if (rs.next()){
-				role = rs.getString(3);
-				System.out.println("login!!");
-			}else{
-				role = "error";
+				
+				fileLocation= rs.getString(1);
+				
 			}
-		} catch (Exception ex) {
-			role = "error";
+		
+		}catch(SQLException ex){
 			ex.printStackTrace();
-		}finally{
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		finally{
 			try {
 				con.close();
 			} catch (SQLException e) {
@@ -37,6 +40,7 @@ public class UserDAO {
 				e.printStackTrace();
 			}
 		}
-		return role;
-	}
+		return fileLocation;
+		
+	}	
 }

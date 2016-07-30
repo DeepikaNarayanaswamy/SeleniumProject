@@ -3,9 +3,13 @@ var validations;
 requirementsArray = [];
 validationArray = [];
 var hot1;
+// This function is specific to initialize the steps to demo part
+// It also gets the next req id
 function init(){
 	requirements = getAllRequirements();
 	validations =  getAllValidations();
+	getReqId();
+	getAllSprints();
 	setTimeout(function(){ initializeStepArea()}, 3000);
 	bindDumpButton();
 }
@@ -41,9 +45,11 @@ function initializeStepArea(){
 }
 function saveRequirement(){
 	var req = {};
-	req["id"] = $("#story_id").val();
+	req["id"] = $("#story_id").text();
 	req["description"] = $("#summary").val();
 	req["title"] = $("#title").val();
+	req["sprintId"] = $("#planned_for").val();
+	req["priority"]=$("#priority").val();
 	// Here we need to get the test step and the validation id for each step.
 	dataArray = hot1.getData();
 	steps = [];
@@ -178,4 +184,40 @@ function bindDumpButton() {
   }
 
 
+
+function getReqId(){
+	
+	$.ajax({
+		url:"rest/requirements/getNextReqId",
+		success:function(response){
+			$("#story_id").text(response);
+			 
+		},
+		error: function(error){
+			
+			console.log(error);
+		} 
+	});
+	
+}
+
+function getAllSprints(){
+	
+	$.ajax({
+		url:"rest/requirements/getSprints",
+		success:function(response){
+			console.log("success getting requirements");
+			planned_for = $("#planned_for");
+			$.each(response, function() {
+				planned_for.append($("<option />").val(this.id).text(this.name));
+			});
+			
+		},
+		error: function(error){
+			
+			console.log(error);
+		} 
+	})
+	return requirements;
+}
 
