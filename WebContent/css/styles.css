@@ -1,4 +1,89 @@
-.header{
+div{
+	font-family: "Open Sans";
+	font-size: 20px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: bold;
+	line-height: 20px;
+	
+}
+*{
+	margin: 0 auto;
+}
+.fleft{
+	float:left;
+}
+.fright{
+	float: right;
+}
+.clearfix{
+	clear:both;
+	margin: 10px;
+    padding: 30px;
+}
+header{
 	height:50px;
-	background-color: #ffeeef;
+	background-color: #3598DC;
+}
+.logo,.name{
+	padding:10px;
+}
+.login{
+	border: 1px solid #5C9BD1;
+	background-color: #578EBE;
+	position: absolute;
+	top:50%;
+	left:50%;
+	padding: 10px;
+}
+label{
+	color:#ffffff;
+	padding:10px;
+}
+.mar10{
+	margin-top:10px;
+}
+button {
+   background-color: #e7e7e7; color: black; /* Green */
+    border: none;
+   
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px;
+}
+nav{
+	width:20%;
+	border: 1px solid black;
+
+}
+.ba-item{
+	border:1px solid #E1E5EC;
+	padding: 10px;
+	margin: 10px;
+	color: black;
+}
+.workspace{
+	top:50%;
+	left:30%;
+	position: absolute;
+}
+.requriment_container{
+background-color: #578EBE;	
+width:80%;
+}
+.width20{
+	width:20%;
+}
+.width40{
+	width: 40%;
+}
+.width16{
+	width: 16%;
+}
+.error{
+	color : red;
+	font-size : 10px;
 }

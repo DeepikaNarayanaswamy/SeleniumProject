@@ -11,7 +11,7 @@ import com.mbt.helper.MySQLConnection;
 public class UserDAO {
 
 	public String checkLogin(String uname, String password) {
-		String status = "success";
+		String role = "success";
 		Connection con = MySQLConnection.getConnection();
 		try {
 			PreparedStatement ps = con
@@ -20,11 +20,14 @@ public class UserDAO {
 			ps.setString(1, uname);
 			ps.setString(2, password);
 			ResultSet rs = ps.executeQuery();
-			if (rs.first()){
+			if (rs.next()){
+				role = rs.getString(3);
 				System.out.println("login!!");
+			}else{
+				role = "error";
 			}
 		} catch (Exception ex) {
-			status = "error";
+			role = "error";
 			ex.printStackTrace();
 		}finally{
 			try {
@@ -34,6 +37,6 @@ public class UserDAO {
 				e.printStackTrace();
 			}
 		}
-		return status;
+		return role;
 	}
 }

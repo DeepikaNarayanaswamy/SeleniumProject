@@ -1,10 +1,5 @@
-<html>
-<head>
+<%@ include file="header.jsp" %>
 
-	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans">
-	<link rel="stylesheet" type="text/css" href = "css/styles.css">
-</head>
-<body>
 <div class = "fright login">
 
 
@@ -20,9 +15,8 @@
 		<span class = "fright mar10"><input id = "password" name = "password" type = "password"/></span>
 		</div>
 		
+		<div class = "error"></div>
 		<div><button  onclick = "login()"/>Login</button></div>
 
 	</form>
 </div>
-</body>
-</html>

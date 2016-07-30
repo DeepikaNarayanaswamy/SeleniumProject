@@ -30,4 +30,7 @@ public class MBTConstants {
 	public static final Integer EXPECTED_RESULT_CELL_NUMBER = 10;
 	public static final Integer BA_REVIEW_COMMENTS_CELL_NUMBER = 11;
 	public static final Integer STATUS_CELL_NUMBER = 12;
+	
+	public static final String ROLE_BA = "BA";
+	public static final String ROLE_TEST = "TEST";
 }
