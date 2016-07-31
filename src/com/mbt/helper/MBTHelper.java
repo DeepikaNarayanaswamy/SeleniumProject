@@ -19,7 +19,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.mbt.common.constants.MBTConstants;
-import com.mbt.common.constants.QueryConstants;
 import com.mbt.common.dao.RequirementsDAO;
 import com.mbt.common.dao.ValidationRuleDAO;
 import com.mbt.common.dtos.Requirement;

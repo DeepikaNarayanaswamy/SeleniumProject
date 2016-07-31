@@ -1,26 +1,25 @@
 package com.mbt.servlets;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.mbt.common.dao.RequirementsDAO;
-import com.mbt.common.dtos.Requirement;
+import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class SaveRequirementServlet
+ * Servlet implementation class LogoutServlet
  */
-
-public class SaveRequirementServlet extends HttpServlet {
+@WebServlet("/LogoutServlet")
+public class LogoutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SaveRequirementServlet() {
+    public LogoutServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,20 +29,20 @@ public class SaveRequirementServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		doPost(request,response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-			Requirement Req = new Requirement();
-			Req.setId(new Integer(request.getParameter("story_id")));
-			Req.setTitle(request.getParameter("title"));
-			Req.setDescription(request.getParameter("summary"));
-			
-			RequirementsDAO.insertRequirement(Req);
-			
+		// TODO Auto-generated method stub
+		HttpSession session = request.getSession(true);
+		session.setAttribute("username",null);
+		session.invalidate();
+		String redirect =  response.encodeRedirectURL(request.getContextPath() + "/login.jsp" );
+	    response.sendRedirect(redirect);
+	
 		
 	}
 

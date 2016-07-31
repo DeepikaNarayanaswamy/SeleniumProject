@@ -7,12 +7,9 @@
 <script src="js/jquery-ui.js"></script>
 <script src = "js/login.js"></script>
 <script src = "js/requirement.js"></script>
-<script src = "assets/js/jquery.min.js"></script>
-<script src = "assets/js/jquery.scrollex.min.js"></script>
-<script src = "assets/js/jquery.scrolly.min.js"></script>
-<script src = "assets/js/skel.min.js"></script>
+
 <script src = "assets/js/util.js"></script>
-<script src = "assets/js/main.js"></script>
+
 <link rel="stylesheet" href="css/styles.css">
 
 <link data-jsfiddle="common" rel="stylesheet" media="screen" href="dist/pikaday/pikaday.css">
@@ -26,6 +23,7 @@
 
   <script data-jsfiddle="common" src="dist/handsontable.js"></script>
 <link data-jsfiddle="common" rel="stylesheet" media="screen" href="dist/handsontable.css">
+<link data-jsfiddle="common" rel="stylesheet" href="css/jquery-ui.css">
 </head>
 	<header>
 		<div class = "fleft logo"> Test Modulate </div>

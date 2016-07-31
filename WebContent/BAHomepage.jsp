@@ -25,7 +25,7 @@
 					<a href = "AddRequirement.jsp">Create Requirement</a>
 			</div>
 			<div class = "ba-item">
-				Find Requirement
+				<a href = "FindRequirement.jsp">Find Requirement</a>
 			</div>
 	</div>
 

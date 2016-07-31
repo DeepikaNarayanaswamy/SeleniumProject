@@ -3,7 +3,7 @@ package com.mbt.common.constants;
 public class QueryConstants {
 
 	public static final String INSERT_UPDATE_REQUIREMENT = "INSERT INTO REQUIREMENT (ID,TITLE,DESCRIPTION,PRIORITY,SPRINT_ID) VALUES (?,?,?,?,?)";
-	public static final String GET_ALL_REQUIREMENTS = "SELECT ID,TITLE,DESCRIPTION FROM REQUIREMENT;";
+	public static final String GET_ALL_REQUIREMENTS = "SELECT ID,TITLE,DESCRIPTION,SPRINT_ID FROM REQUIREMENT;";
 	public static final String COL_TITLE = "TITLE";
 	public static final String COL_ID = "ID";
 	
@@ -19,4 +19,6 @@ public class QueryConstants {
 	public static final String GET_NEXT_REQ_ID = "SELECT max(id)+1 FROM testmodulate.requirement;";
 	public static final String GET_XL_LOCATION = "SELECT parameter_value FROM testmodulate.config where parameter_name = 'XL_LOCATION';";
 	public static final String GET_SPRINT = "SELECT sprint_id,sprint_name from testmodulate.SPRINT;";
+	public static final String GET_SPRINT_NAME = "SELECT sprint_name from testmodulate.SPRINT where sprint_id = ?";
+	public static final String COL_SPRINT_ID = "SPRINT_ID";
 }

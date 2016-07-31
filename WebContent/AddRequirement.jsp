@@ -5,7 +5,7 @@
 	<div>
 	<span class="fleft width40">
 		<label for="story_id">User story ID</label>
-<<<<<<< HEAD
+
 		
 	</span>
 	<span id = "story_id"></span>

@@ -58,6 +58,7 @@ public class RequirementsDAO {
 				Requirement req = new Requirement();
 				req.setId(rs.getInt(QueryConstants.COL_ID));
 				req.setTitle(rs.getString(QueryConstants.COL_TITLE));
+				req.setSprintId(rs.getInt(QueryConstants.COL_SPRINT_ID));
 				reqList.add(req);
 			}
 		
