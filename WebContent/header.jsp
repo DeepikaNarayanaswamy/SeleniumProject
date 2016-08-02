@@ -1,4 +1,6 @@
 <html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page session="true" %>
 <head>
 
 	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans">
@@ -11,7 +13,7 @@
 <script src = "assets/js/util.js"></script>
 
 <link rel="stylesheet" href="css/styles.css">
-
+<link rel="stylesheet" href="css/font-awesome.css">
 <link data-jsfiddle="common" rel="stylesheet" media="screen" href="dist/pikaday/pikaday.css">
  	<!--  Handson table js files -->
   <script data-jsfiddle="common" src="dist/pikaday/pikaday.js"></script>

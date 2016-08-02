@@ -184,7 +184,41 @@ public class RequirementsDAO {
 		
 	}
 
-
+	public static List<Requirement> getReqByName(String name){
+	
+		Connection con = MySQLConnection.getConnection();
+		
+		List<Requirement> reqList = new ArrayList<>();
+		
+		try{
+		
+			PreparedStatement stmt = con.prepareStatement(QueryConstants.GET_REQUIRMENT_BY_NAME);
+			stmt.setString(1,name + "%");
+			
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()){
+				Requirement req = new Requirement();
+				req.setId(rs.getInt(1));
+				req.setTitle(rs.getString(2));
+				reqList.add(req);
+			}
+		
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return reqList;
+	
+	}
 
 	
 }

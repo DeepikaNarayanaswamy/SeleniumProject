@@ -7,6 +7,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.mbt.common.dao.ConfigDAO;
@@ -70,5 +71,12 @@ public class RequirementsService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Sprint> getAllSprints(){
 		return SprintDAO.getAllSprints();
+	}
+	
+	@GET
+	@Path("/getReqByName")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Requirement> getReqbyName(@QueryParam("reqTitle")String title){
+		return RequirementsDAO.getReqByName(title);
 	}
 }

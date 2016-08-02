@@ -116,26 +116,7 @@ function getAllRequirements(){
 		success:function(response){
 			console.log("success getting requirements");
 			requirements = response;
-			if ($("#requirement_container") != undefined){
-				//This is only for find requirements p 
-				reqArray = [];
-				for (i=0;i<requirements.length;i++){
-					var req = {};
-					req.label =requirements[i].title; 
-					req.value = requirements[i].id;
-					reqArray.push(req);
-					
-				}
-				
-				$( "#search_requirement" ).autocomplete({
-				      source:reqArray,
-				      minLength: 2,
-				      select: function( event, ui ) {
-				    	  console.log(ui.item.value);
-				    	  loadRequriementResults(ui.item.value);
-				      }
-				    });
-				}
+			
 			
 		},
 		error: function(error){
@@ -242,18 +223,34 @@ function getAllSprints(){
 	return requirements;
 }
 
-function initializeFindReqArea(){
-	init();
+
+function getRequirementsByTitle(){
+	var name = $("#search_requirement").val();
 	
-	
+		$.ajax({
+			url:"rest/requirements/getReqByName?reqTitle="+name,
+			success:function(response){
+				console.log("success getting requirements");
+				loadRequriementResults(response);
+				
+				
+			},
+			error: function(error){
+				
+				console.log(error);
+			} 
+		})
+		return requirements;
 }
 
-function loadRequriementResults(reqId){
+function loadRequriementResults(requirements){
+	list = $("#requirement_container");
 	 for (i=0;i<requirements.length;i++){
-		 if (requirements[i].id == reqId ){
-			 console.log(requirements[i].description);
-			 console.log(requirements[i].sprintId);
-		 }
-		 
+		 	 console.log(requirements[i].id);
+		 	 $(list).append('<li onclick = "loadReqJSP()">' +requirements[i].title + '</a></li>' );		 
+		 	 
 	 }
+}
+function loadReqJSP(){
+	 $("#requirement_area").load("AddRequirement.jsp").dialog();
 }
