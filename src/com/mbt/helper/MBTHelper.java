@@ -17,6 +17,8 @@ import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import com.mbt.common.constants.MBTConstants;
 import com.mbt.common.dao.RequirementsDAO;
@@ -26,8 +28,8 @@ import com.mbt.common.dtos.TestStep;
 
 public class MBTHelper {
 
-	static List<TestStep> testStepsFinal = new ArrayList<TestStep>();
-	static boolean startFound = false;
+	 List<TestStep> testStepsFinal = new ArrayList<TestStep>();
+	 boolean startFound = false;
 	public static void writeTestCases(List<TestStep> steps, Requirement req, String fileLocation) {
 
 		XSSFWorkbook workbook = new XSSFWorkbook();
@@ -192,14 +194,18 @@ public class MBTHelper {
 
 	}
 
-	public static List<TestStep> getAllStepsForRequirement(Requirement req,String fileLocation) {
+	public  List<TestStep> getAllStepsForRequirement(Requirement req,String fileLocation) {
 		
 		try {
 				
 			List<TestStep> steps = req.getTestSteps();
 			for (TestStep step : steps) {
-				if (step.getDescription().equals("Start") && !startFound)
+				if (step.getDescription().equalsIgnoreCase("Start") && !startFound){
 					startFound = true;
+					testStepsFinal.add(step);
+					continue;
+				}
+				
 				if (step.getIs_requirement().equals("Y")) {
 
 					Requirement interReq = new Requirement();
@@ -210,19 +216,77 @@ public class MBTHelper {
 					getAllStepsForRequirement(interReq,fileLocation);
 
 				} else {
-					if (!startFound)
-						testStepsFinal.add(step);
+						if (!step.getDescription().equalsIgnoreCase("Start"))
+							testStepsFinal.add(step);
 				}
 			}
 			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-
+		
 		writeTestCases(testStepsFinal, req,fileLocation);
 		return testStepsFinal;
 	}
-
+	
+	public static JSONObject getFlowchart(List<TestStep> steps){
+		
+		int startPosx = 100;
+		int startPosy = 100;
+		JSONObject flowchart = new JSONObject();
+		
+		JSONArray nodes = new JSONArray();
+		JSONArray connections = new JSONArray();
+		
+		for (int i=0;i<steps.size();i++){
+			
+			JSONObject nodeObject = new JSONObject();
+			if (steps.get(i).getDescription().equalsIgnoreCase(MBTConstants.START)){
+				nodeObject.put(MBTConstants.BLOCK_ID, "startpoint");
+				nodeObject.put(MBTConstants.NODE_TYPE, MBTConstants.NODE_TYPE_START);
+			}else if (steps.get(i).getDescription().equalsIgnoreCase(MBTConstants.END)){
+				nodeObject.put(MBTConstants.BLOCK_ID, "endpoint");
+				nodeObject.put(MBTConstants.NODE_TYPE, MBTConstants.NODE_TYPE_END);
+			}else {
+				nodeObject.put(MBTConstants.BLOCK_ID, "taskcontainer"+(i));
+				nodeObject.put(MBTConstants.NODE_TYPE, MBTConstants.NODE_TYPE_TASK);
+				nodeObject.put(MBTConstants.TEXT,steps.get(i).getDescription());
+			}
+			
+			nodeObject.put(MBTConstants.POSITION_X, startPosx);
+			nodeObject.put(MBTConstants.POSITION_Y, startPosy);
+			startPosy+=200;
+			nodes.add(nodeObject);
+			
+			
+		}
+		
+		for (int i=1;i<=steps.size();i++){
+			JSONObject connection = new JSONObject();
+			connection.put(MBTConstants.CONNECTION_ID,"con_1"+i);
+			if (i==1){
+				connection.put(MBTConstants.PAGE_SOURCE_ID,"startpoint");
+				connection.put(MBTConstants.PAGE_TARGET_ID,"taskcontainer"+i);
+			}else if (i == steps.size() - 1){
+				
+				connection.put(MBTConstants.PAGE_SOURCE_ID,"taskcontainer"+(i-1));
+				connection.put(MBTConstants.PAGE_TARGET_ID, "endpoint");
+			}
+			
+			else{
+				connection.put(MBTConstants.PAGE_SOURCE_ID,"taskcontainer"+(i-1));
+				connection.put(MBTConstants.PAGE_TARGET_ID,"taskcontainer"+(i));
+			}
+			connections.add(connection);
+		}
+		flowchart.put(MBTConstants.NODES,nodes);
+		flowchart.put(MBTConstants.CONNECTIONS,connections);
+		System.out.println(flowchart.toJSONString());
+		return flowchart;
+		
+		
+	}
+	
 	public static void main(String[] args) {
 		Requirement reqa = new Requirement();
 		reqa.setTestSteps(RequirementsDAO.getStepsonMainReqId(9893));

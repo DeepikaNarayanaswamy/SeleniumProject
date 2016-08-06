@@ -9,7 +9,8 @@
 <script src="js/jquery-ui.js"></script>
 <script src = "js/login.js"></script>
 <script src = "js/requirement.js"></script>
-
+<script src="js/jsPlumb-2.1.4-min.js"></script>
+<script src = "js/flowchart.js"></script>
 <script src = "assets/js/util.js"></script>
 
 <link rel="stylesheet" href="css/styles.css">
@@ -36,4 +37,13 @@
 		 <%= session.getAttribute("username") %></span>
 
 	</header>
-
+	
+	<!--  this should be removed -->
+<div class="window task" style="left: 120px; top:200px; display:none;" data-nodetype="task" id="taskcontainer0">
+            <div class="ctrl_container">
+                <div class="button_remove">x</div>
+            </div>
+            <div class="details_container">
+                <div class="detail_text" contenteditable="true">Enter text</div>
+            </div>
+        </div>

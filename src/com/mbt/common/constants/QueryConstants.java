@@ -22,4 +22,7 @@ public class QueryConstants {
 	public static final String GET_SPRINT_NAME = "SELECT sprint_name from testmodulate.SPRINT where sprint_id = ?";
 	public static final String COL_SPRINT_ID = "SPRINT_ID";
 	public static final String GET_REQUIRMENT_BY_NAME = "SELECT ID,TITLE FROM testmodulate.REQUIREMENT WHERE TITLE LIKE ?";
+	public static final String INSERT_FLOWCHART = "INSERT INTO testmodulate.FLOWCHART (FLOWCHART_NAME,FLOWCHART_JSON,REQ_ID) VALUES (?,?,?);";
+	public static final String GET_FLOWCHART = "SELECT FLOWCHART_NAME,FLOWCHART_JSON FROM testmodulate.FLOWCHART where req_id = ?";
+	
 }

@@ -138,11 +138,12 @@
 	<div>
 	<button value = "Save" onclick = "saveRequirement()">Save</button>
 	</div>
-</div>
-
-<script>
 	
-</script>
-
+	<div class = "link">
+	<a href = "Flowchart.jsp">Show Graph</a>
+	</div>
+</div>
+<div id = "flowchart_area">
+</div>
 </body>								
 										

@@ -154,7 +154,7 @@ public class RequirementsDAO {
 	public static int getNextReqId(){
 		
 		Connection con = MySQLConnection.getConnection();
-		int req_id = 0;
+		int req_id = -1;
 		
 		try{
 		
@@ -164,7 +164,10 @@ public class RequirementsDAO {
 			if (rs.next()){
 				
 				req_id = rs.getInt(1);
-				
+				System.out.println("req_id = " + req_id);
+			}
+			if (req_id == 0){
+				req_id = 1;
 			}
 		
 		}catch(SQLException ex){

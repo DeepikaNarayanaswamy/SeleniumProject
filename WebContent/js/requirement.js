@@ -52,6 +52,7 @@ function saveRequirement(){
 	req["priority"]=$("#priority").val();
 	// Here we need to get the test step and the validation id for each step.
 	dataArray = hot1.getData();
+	console.log(dataArray);
 	steps = [];
 	
 	for (i=0;i<dataArray.length;i++){
@@ -100,6 +101,9 @@ function saveRequirement(){
 			alert (response);
 			// load the requirements again
 			requirements = getAllRequirements();
+			
+			console.log(response);
+			loadFlowchartJSP(response.req_id);
 		},
 		error: function(error){
 			console.log(error);
@@ -253,4 +257,19 @@ function loadRequriementResults(requirements){
 }
 function loadReqJSP(){
 	 $("#requirement_area").load("AddRequirement.jsp").dialog();
+}
+
+
+function loadFlowchartJSP(reqId){
+	window.location.href = "Flowchart.jsp?reqId="+reqId;
+	
+}
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
 }

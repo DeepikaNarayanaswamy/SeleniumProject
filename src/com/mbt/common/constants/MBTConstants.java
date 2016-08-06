@@ -33,4 +33,23 @@ public class MBTConstants {
 	
 	public static final String ROLE_BA = "BA";
 	public static final String ROLE_TEST = "TEST";
+	
+	// These constants are for flowchart
+	public static final String BLOCK_ID = "blockId"; 
+	public static final String NODE_TYPE = "nodetype";
+	public static final String TEXT = "text";
+	public static final String POSITION_X = "positionX";
+	public static final String POSITION_Y = "positionY" ;
+	public static final String NODES = "nodes";
+	public static final String CONNECTIONS = "connections";
+	public static final String CONNECTION_ID = "connectionId";
+	public static final String NO_ELEMENTS = "numberOfElements";
+	public static final String PAGE_SOURCE_ID = "pageSourceId";
+	public static final String PAGE_TARGET_ID = "pageTargetId";
+	public static final String START = "START";
+	public static final String END = "END";
+	public static final String NODE_TYPE_START = "startpoint";
+	public static final String NODE_TYPE_TASK = "task";
+	public static final String NODE_TYPE_END = "endpoint";
+	
 }

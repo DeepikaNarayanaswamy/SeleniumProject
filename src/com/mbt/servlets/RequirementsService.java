@@ -10,11 +10,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.json.simple.JSONObject;
+
 import com.mbt.common.dao.ConfigDAO;
+import com.mbt.common.dao.FlowchartDAO;
 import com.mbt.common.dao.RequirementsDAO;
 import com.mbt.common.dao.SprintDAO;
+import com.mbt.common.dtos.Flowchart;
 import com.mbt.common.dtos.Requirement;
 import com.mbt.common.dtos.Sprint;
+import com.mbt.common.dtos.TestStep;
 import com.mbt.helper.MBTHelper;
 
 @Path("/requirements")
@@ -30,24 +35,36 @@ public class RequirementsService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String saveRequirement(Requirement requirement){
+	public JSONObject saveRequirement(Requirement requirement){
 		String status = "success";
 		try{
 		int i;
 		
 		RequirementsDAO.insertRequirement(requirement);
+		System.out.println(requirement.getTestSteps().size());
 		for (i=0;i<requirement.getTestSteps().size();i++){
 			RequirementsDAO.insertTestStep(requirement.getTestSteps().get(i));
 			
 		}
 		String fileLocationtoSave = ConfigDAO.getFileLocation();
 		// This function will be used to write to the xl file
-		MBTHelper.getAllStepsForRequirement(requirement,fileLocationtoSave);
+		
+		List<TestStep> steps = new MBTHelper().getAllStepsForRequirement(requirement,fileLocationtoSave);
+		JSONObject flowchartJSON = MBTHelper.getFlowchart(steps);
+		Flowchart flowchart = new Flowchart();
+		flowchart.setFlowchartJSON(flowchartJSON.toJSONString());
+		flowchart.setFlowchartName(requirement.getTitle());
+		flowchart.setRequirementId(requirement.getId());
+		FlowchartDAO.saveFlowchart(flowchart);
+		
 		}catch(Exception ex){
 			ex.printStackTrace();
 			status = "error :" + ex.getMessage();
 		}
-		return status;
+		JSONObject jsonStatus = new JSONObject();
+		jsonStatus.put("status",status);
+		jsonStatus.put("req_id",requirement.getId());
+		return jsonStatus;
 	}
 	@GET
 	@Path("/getNextReqId")
@@ -78,5 +95,12 @@ public class RequirementsService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Requirement> getReqbyName(@QueryParam("reqTitle")String title){
 		return RequirementsDAO.getReqByName(title);
+	}
+	
+	@GET
+	@Path("/getFlowchartByReqId")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Flowchart getFlowchartByReqId(@QueryParam("reqId")Integer reqId){
+		return FlowchartDAO.getFlowchart(reqId);
 	}
 }
