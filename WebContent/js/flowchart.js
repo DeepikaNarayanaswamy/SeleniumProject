@@ -235,6 +235,28 @@ function saveFlowchart(){
 	//console.log(flowChartJson);
 	
 	$('#jsonOutput').val(flowChartJson);
+	reqId = getParameterByName("reqId");
+	var flowchart = {};
+	flowchart["requirementId"] = reqId;
+	flowchart["flowchartJSON"] = flowChartJson;
+	$.ajax({
+		url:"rest/requirements/updateFlowchart",
+		type:"POST",
+		contentType:"application/json;charset=utf-8",
+		data:JSON.stringify(flowchart),
+		success:function(response){
+					
+			console.log(response);
+			
+		},
+		error: function(error){
+			console.log(error);
+			
+			alert (error.responseText);
+		} 
+	});
+
+	
 }
 function loadFlowchart(){
 	//var flowChartJson = $('#jsonOutput').val();

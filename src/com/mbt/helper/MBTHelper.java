@@ -164,7 +164,7 @@ public class MBTHelper {
 			cellStepNumber.setCellStyle(cellStyle);
 			XSSFCell cellStepDesc = row.createCell(colnum);
 			cellStepDesc.setCellValue(step.getDescription());
-			if (step.getValidation_id() != 0) {
+			/*if (step.getValidation_id() !=null && step.getValidation_id() != 0) {
 				List<String> rules = ValidationRuleDAO
 						.getAllValidationRuleforfield(step.getValidation_id());
 				// in the same col. as the step, write the validation rule
@@ -175,7 +175,7 @@ public class MBTHelper {
 							.createCell(colnum);
 					cellValidationDesc.setCellValue(rules.get(j));
 				}
-			}
+			}*/
 
 		}
 		

@@ -7,7 +7,7 @@ var hot1;
 // It also gets the next req id
 function init(){
 	requirements = getAllRequirements();
-	validations =  getAllValidations();
+	//validations =  getAllValidations();
 	getReqId();
 	getAllSprints();
 	setTimeout(function(){ initializeStepArea()}, 3000);
@@ -24,19 +24,15 @@ function initializeStepArea(){
 		data:getCarData(),
 		startRows:10,
 		startCols:2,
-	  colHeaders: ['Test Step ', 'Validation'],
+	  colHeaders: ['Test Step '],
 	  columns: [
 	    {
 	      type: 'autocomplete',
 	      source: requirementsArray,
 	      strict: false
-	    },
+	    }
 	   
-	    {
-	      type: 'autocomplete',
-	      source: validationArray,
-	      strict: false
-	    },
+	   
 	  ],
 	  contextMenu:true
 
@@ -57,7 +53,7 @@ function saveRequirement(){
 	
 	for (i=0;i<dataArray.length;i++){
 		step = {};
-			if (dataArray[i][0] != null || dataArray[i][1] != null ){
+			if (dataArray[i][0] != null){
 			stepDesc = dataArray[i][0];
 			validation = dataArray[i][1];
 			req_id=0;
@@ -70,12 +66,12 @@ function saveRequirement(){
 					break;
 				}
 			}
-			for (k=0;k<validations.length;k++){
+			/*for (k=0;k<validations.length;k++){
 				if (validation === validations[k].fieldName){
 					validation_id = validations[k].fieldId;
 					break;
 				}
-			}
+			}*/
 			step["description"] = stepDesc;
 			step["main_Req_id"] = req["id"];
 			step["req_id"] = req_id;
@@ -84,7 +80,7 @@ function saveRequirement(){
 			}else{
 				step["is_requirement"] = "N";
 			}
-			step["validation_id"] = validation_id;
+			//step["validation_id"] = validation_id;
 			steps.push(step);
 		}
 	}
@@ -110,7 +106,7 @@ function saveRequirement(){
 			refreshStepArea();
 			alert (error.responseText);
 		} 
-	})
+	});
 }
 
 function getAllRequirements(){
@@ -152,15 +148,15 @@ function getCarData() {
 	  	validationArray.length=0;
 	  	console.log(requirements);
 	  	requirementsArray.length = 0;
-		 for (i=0;i<validations.length;i++){
+		/* for (i=0;i<validations.length;i++){
 			 validationArray.push(validations[i].fieldName);
-		 }
+		 }*/
 		 for (i=0;i<requirements.length;i++){
 			 requirementsArray.push(requirements[i].title);
 		 }
 		 
 		 console.log (requirementsArray);
-		 console.log(validationArray);
+		//console.log(validationArray);
 	  
  
 }

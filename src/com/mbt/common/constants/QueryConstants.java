@@ -7,7 +7,7 @@ public class QueryConstants {
 	public static final String COL_TITLE = "TITLE";
 	public static final String COL_ID = "ID";
 	
-	public static final String INSERT_TEST_STEP = "INSERT INTO TEST_STEP (DESCRIPTION,IS_REQUIREMENT,MAIN_REQUIREMENT_ID,REQUIREMENT_ID,validation_id) VALUES (?,?,?,?,?)";
+	public static final String INSERT_TEST_STEP = "INSERT INTO TEST_STEP (DESCRIPTION,IS_REQUIREMENT,MAIN_REQUIREMENT_ID,REQUIREMENT_ID) VALUES (?,?,?,?)";
 	public static final String GET_TEST_STEPS_FOR_REQUIREMENT = "SELECT ID,DESCRIPTION,VALIDATION_ID,IS_REQUIREMENT,REQUIREMENT_ID FROM TEST_STEP WHERE MAIN_REQUIREMENT_ID = ?";
 	public static final String GET_ALL_VALIDATION_FIELDS = "SELECT FIELD_ID,FIELD_NAME FROM VALIDATION_FIELD;";
 	public static final String COL_FIELD_ID = "FIELD_ID";
@@ -24,5 +24,6 @@ public class QueryConstants {
 	public static final String GET_REQUIRMENT_BY_NAME = "SELECT ID,TITLE FROM testmodulate.REQUIREMENT WHERE TITLE LIKE ?";
 	public static final String INSERT_FLOWCHART = "INSERT INTO testmodulate.FLOWCHART (FLOWCHART_NAME,FLOWCHART_JSON,REQ_ID) VALUES (?,?,?);";
 	public static final String GET_FLOWCHART = "SELECT FLOWCHART_NAME,FLOWCHART_JSON FROM testmodulate.FLOWCHART where req_id = ?";
+	public static final String UPDATE_FLOWCHART = "UPDATE testmodulate.FLOWCHART set FLOWCHART_JSON = ? WHERE req_id = ?";
 	
 }

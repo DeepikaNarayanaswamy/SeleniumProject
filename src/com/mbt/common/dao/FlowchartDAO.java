@@ -72,4 +72,32 @@ public class FlowchartDAO {
 		return flowchart;
 		
 	}
+	
+	public static String updateFlowchart(Flowchart flowchart){
+		String status = "error";
+		Connection con = MySQLConnection.getConnection();
+		try{
+		PreparedStatement ps = con.prepareStatement(QueryConstants.UPDATE_FLOWCHART);
+	
+		
+		ps.setString(1,flowchart.getFlowchartJSON());
+		ps.setInt(2,flowchart.getRequirementId());
+		ps.executeUpdate();
+		status = "success";
+		}catch(SQLException ex){
+			status = "error";
+			ex.printStackTrace();
+		}
+		finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		return status;
+	}
 }

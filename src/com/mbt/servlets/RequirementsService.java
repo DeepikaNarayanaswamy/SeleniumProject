@@ -103,4 +103,14 @@ public class RequirementsService {
 	public Flowchart getFlowchartByReqId(@QueryParam("reqId")Integer reqId){
 		return FlowchartDAO.getFlowchart(reqId);
 	}
+	
+	@POST
+	@Path("/updateFlowchart")
+	@Consumes(MediaType.APPLICATION_JSON)
+	
+	public String updateFlowchartByReqId(Flowchart flowchart){
+		return FlowchartDAO.updateFlowchart(flowchart);
+	}
+	
+	
 }

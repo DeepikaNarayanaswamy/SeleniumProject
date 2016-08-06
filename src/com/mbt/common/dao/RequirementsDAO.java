@@ -91,7 +91,7 @@ public class RequirementsDAO {
 		}
 		ps.setInt(3,testStep.getMain_Req_id());
 		ps.setInt(4,testStep.getReq_id());
-		ps.setInt(5,testStep.getValidation_id());
+		//ps.setInt(5,testStep.getValidation_id());
 		ps.executeUpdate();
 		}catch(SQLException ex){
 			ex.printStackTrace();
