@@ -53,6 +53,20 @@
        <div class="endpoint point window node" style="left: 150px; top:400px" data-nodetype="endpoint" id="endpoint">End</div>     
     <textarea id="jsonOutput" style="width:100%;height:100px;"></textarea>
 
+	<div id = "merge_container" class = "hide">
+		
+		<div>
+			<button onclick = "getFlowchartbyusecase()" id = "get_flowchart">Get flowcharts</button>
+		</div>
+		
+	</div>
+	<div id="flowchart_list">
+		
+			<div>
+			<button onclick = "mergeAll()" id = "get_flowchart">Merge me</button>
+		</div>
+	
+	</div>
     <script src="js/jquery.1.11.2.min.js"></script>
     <script src="js/jsPlumb-2.1.4-min.js"></script>
     <script src="js/flowchart.js"></script>

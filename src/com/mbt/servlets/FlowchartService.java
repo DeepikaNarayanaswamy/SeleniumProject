@@ -66,7 +66,12 @@ public class FlowchartService {
 		return FlowchartDAO.getFlowchart(id);
 	}
 
-	
+	@GET
+	@Path("/getFlowchartsByUsecaseId")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Flowchart> getFlowchartByUsecaseId(@QueryParam("usecaseId")Integer usecaseId){
+		return UsecaseDAO.getFlowchartByUsecaseId(usecaseId);
+	}
 	
 	
 	@POST

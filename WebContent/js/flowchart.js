@@ -2,6 +2,9 @@ var numberOfElements = 0;
 var htmlBase = 'drawingArea';
 // This will be used when we create / merge flowchart in Testers dashbaord
 var globalFlowchartId;
+var usecases;
+// use to store the flowcharts of a usecase 
+var flowchartUsecases = [];
 jsPlumb.ready(function () {
 
 	//FIX DOM:
@@ -76,6 +79,9 @@ jsPlumb.ready(function () {
 
 	$('#updateButton').click(function(){
 		updateFlowchart();
+	});
+	$("#mergeButton").click(function(){
+		merge();
 	});
 });
 
@@ -279,10 +285,14 @@ function getFlowchartJSON(){
 
 
 // This function saves the new flowchart to db.
-function createFlowchart(flowchartName,flowcharJson){
+function createFlowchart(flowcharJson){
 	var flowchart = {};
 	flowchart["flowchartName"] =  $("#f_title").val();
-	flowchart["flowchartJSON"] = getFlowchartJSON();
+	if (flowcharJson == undefined)
+		flowchart["flowchartJSON"] = getFlowchartJSON();
+	else
+		flowchart["flowchartJSON"] = flowcharJson;
+		
 	flowchart["requirementId"] = null;
 	flowchart["usecaseId"] = $("#f_usecase").val();
 	$.ajax({
@@ -295,6 +305,7 @@ function createFlowchart(flowchartName,flowcharJson){
 			$("#updateButton").removeClass("hide");
 			console.log(response);
 			globalFlowchartId = response.flowchartId;
+			loadFlowchartJSP(globalFlowchartId);
 		},
 		error: function(error){
 			console.log(error);
@@ -311,6 +322,7 @@ function getUsecases(){
 		success:function(response){
 			console.log("success getting usecases");
 			usecase = $("#f_usecase");
+			usecases = response;
 			$.each(response, function() {
 				usecase.append($("<option />").val(this.id).text(this.name));
 			});
@@ -421,4 +433,175 @@ function repositionElement(id, posX, posY){
 	$('#'+id).css('left', posX);
 	$('#'+id).css('top', posY);
 	jsPlumb.repaint(id);
+}
+
+function merge(){
+	var i;
+	$("#merge_container").remove("input");
+	// usecases is a global object taht is is populated by getusecases() 
+	for (i=0;i<usecases.length;i++){
+		
+		var usecaseCheckbox = $('<input type="checkbox" name="usecase" />');
+		$(usecaseCheckbox).attr("value",usecases[i].id);
+		$("#merge_container").removeClass("hide");
+		$("#merge_container").append(usecaseCheckbox).append( usecases[i].name);
+	}
+}
+
+
+// Here we will get the flowcharts of a usecase and put in a json object.
+function getFlowchartbyusecase(){
+	$('input[name="usecase"]:checked').each(function() {
+			
+		$.ajax({
+			url:"rest/flowchart/getFlowchartsByUsecaseId?usecaseId="+this.value,
+			success:function(response){
+				console.log("success getting flowchart",response);
+				if (response.length != 0){
+					
+					var usecase = {};
+					usecase.usecaseId = response[0].usecaseId;
+					usecase.flowcharts = response
+					flowchartUsecases.push(usecase);
+					showFlowchartUsecaselist(flowchartUsecases);
+					
+				}
+			},
+			error: function(error){
+				
+				console.log(error);
+			} 
+		});
+		
+		});
+	
+}
+
+function showFlowchartUsecaselist (flowchartUsecases){
+if (flowchartUsecases.length != 0){
+		
+		for (i=0;i<flowchartUsecases.length;i++){
+			var u_fc_list = document.createElement("div");
+			
+			var usecaseName = document.createElement("span");
+			
+			for (k=0;k<usecases.length;k++){
+				if (flowchartUsecases[i].usecaseId == usecases[k].id)
+					{
+					usecaseName.innerText = usecases[k].name;
+					break;
+					}
+			}
+			$(u_fc_list).append(usecaseName);
+			for (j=0;j<flowchartUsecases[i].flowcharts.length;j++){
+				
+				var usecaseCheckbox = $('<input type="checkbox" name="u_fc" />');
+				$(usecaseCheckbox).attr("value",flowchartUsecases[i].usecaseId + "_"+flowchartUsecases[i].flowcharts[j].flowchartId);
+				
+				$("#flowchart_list").removeClass("hide");
+				$(u_fc_list).append(usecaseCheckbox).append( flowchartUsecases[i].flowcharts[j].flowchartName);
+				
+			}
+			$("#flowchart_list").append(u_fc_list);
+		}
+	}
+
+}
+
+function mergeAll(){
+	// basically we should get the text in the flwochart json. And finally construct the json similart to what we have dione in java
+	var teststeps = [];
+	teststeps.push("start");
+	$('input[name="u_fc"]:checked').each(function() {
+		
+		ufArray = this.value.split("_");
+		// get the usecase id & flowchart id
+		usecaseId = ufArray[0];
+		flowchartId = ufArray[1];
+		var flowcharts;
+		for (i=0;i<flowchartUsecases.length;i++){
+			if (flowchartUsecases[i].usecaseId == usecaseId)
+				{			
+					flowcharts = flowchartUsecases[i].flowcharts;								
+					break;
+				}
+		}
+		
+		for (i=0;i<flowcharts.length;i++){
+			if (flowcharts[i].flowchartId == flowchartId)
+			{	
+				console.log(flowcharts[i].flowchartName);
+				console.log(flowcharts[i].flowchartJSON);
+				json = JSON.parse(flowcharts[i].flowchartJSON);
+				for (j=0;j<json.nodes.length;j++){
+					if (json.nodes[j].nodetype === "task"){
+						teststeps.push(json.nodes[j].text);
+					}
+				}
+			}
+
+		}
+		
+	});
+	teststeps.push("end");
+	console.log(teststeps);
+	getFinalJson(teststeps);
+}
+
+function getFinalJson(teststeps){
+	// here we need to check if a flowchart is drawn. if so then take that also.
+	var startPosx = 100;
+	var startPosy = 100;
+			var flowchart = {};
+			
+	var		 nodes = []
+	var		 connections = [];
+			
+			for (var i=0;i<teststeps.length;i++){
+				
+				nodeObject = {};
+				if (teststeps[i].toLowerCase() == "start"){
+					nodeObject.blockId = "startpoint";
+					nodeObject.nodetype = "startpoint";
+				}else if (teststeps[i].toLowerCase() == "end"){
+					nodeObject.blockId = "endpoint";
+					nodeObject.nodetype = "endpoint";
+				}else {
+					nodeObject.blockId = "taskcontainer"+(i);
+					nodeObject.nodetype = "task";
+					nodeObject.text = teststeps[i];
+				}
+				
+				nodeObject.positionX =  startPosx;
+				nodeObject.positionY =  startPosy;
+				startPosx+=200;
+				nodes.push(nodeObject);
+				
+				
+			}
+			
+			for (var i=1;i<=teststeps.length;i++){
+				 var connection = {};
+				connection.connectionId  = "con_1"+i;
+				if (i==1){
+					connection.pageSourceId = "startpoint";
+					connection.pageTargetId = "taskcontainer"+i;
+				}else if (i == teststeps.length - 1){
+					
+					connection.pageSourceId ="taskcontainer"+(i-1);
+					connection.pageTargetId = "endpoint";
+				}
+				
+				else{
+					connection.pageSourceId = "taskcontainer"+(i-1);
+					connection.pageTargetId = "taskcontainer"+(i);
+				}
+				connections.push(connection);
+			}
+			flowchart.nodes =nodes;
+			flowchart.connections = connections;
+			console.log(flowchart);
+			$("#startpoint").remove();
+			$("#endpoint").remove();
+			createFlowchart(JSON.stringify(flowchart));
 }

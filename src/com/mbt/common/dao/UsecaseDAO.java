@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mbt.common.constants.QueryConstants;
+import com.mbt.common.dtos.Flowchart;
 import com.mbt.common.dtos.Requirement;
 import com.mbt.common.dtos.Usecase;
 import com.mbt.helper.MySQLConnection;
@@ -95,6 +96,44 @@ public class UsecaseDAO {
 				e.printStackTrace();
 			}
 		}
+		
+	}
+	
+	public static List<Flowchart> getFlowchartByUsecaseId(Integer usecaseId){
+		
+		Connection con = MySQLConnection.getConnection();
+		List<Flowchart> flowcharts = new ArrayList<>();
+		
+		try{
+		
+			PreparedStatement stmt = con.prepareStatement(QueryConstants.GET_FLOWCHART_BY_USECASE_ID);
+			stmt.setInt(1, usecaseId);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()){
+				Flowchart flowchart = new Flowchart();
+				flowchart.setFlowchartId(rs.getInt(1));
+				flowchart.setFlowchartName(rs.getString(2));
+				flowchart.setFlowchartJSON(rs.getString(3));
+				flowchart.setUsecaseId(usecaseId);
+				flowcharts.add(flowchart);
+			}
+		
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return flowcharts;
+	
+		
 		
 	}
 }
