@@ -10,6 +10,7 @@ function init(){
 	//validations =  getAllValidations();
 	getReqId();
 	getAllSprints();
+	getAllUsecases();
 	setTimeout(function(){ initializeStepArea()}, 3000);
 	bindDumpButton();
 }
@@ -46,11 +47,12 @@ function saveRequirement(){
 	req["title"] = $("#title").val();
 	req["sprintId"] = $("#planned_for").val();
 	req["priority"]=$("#priority").val();
+	req["useCaseId"] = $("#usecase").val();
 	// Here we need to get the test step and the validation id for each step.
 	dataArray = hot1.getData();
 	console.log(dataArray);
 	steps = [];
-	
+	// Removed validation from test step. ONly the steps will be shown.
 	for (i=0;i<dataArray.length;i++){
 		step = {};
 			if (dataArray[i][0] != null){
@@ -99,7 +101,7 @@ function saveRequirement(){
 			requirements = getAllRequirements();
 			
 			console.log(response);
-			loadFlowchartJSP(response.req_id);
+			loadFlowchartJSP(response.flowchart_id);
 		},
 		error: function(error){
 			console.log(error);
@@ -203,6 +205,7 @@ function getReqId(){
 	
 }
 
+// This function gets the list of sprints and puts in the the select box.
 function getAllSprints(){
 	
 	$.ajax({
@@ -219,8 +222,8 @@ function getAllSprints(){
 			
 			console.log(error);
 		} 
-	})
-	return requirements;
+	});
+
 }
 
 
@@ -257,9 +260,10 @@ function loadReqJSP(){
 
 
 function loadFlowchartJSP(reqId){
-	window.location.href = "Flowchart.jsp?reqId="+reqId;
+	window.location.href = "Flowchart.jsp?flowchartId="+reqId;
 	
 }
+// This function gets the url parameter values.
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, "\\$&");
@@ -268,4 +272,24 @@ function getParameterByName(name, url) {
     if (!results) return null;
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+// This function get all the usecase and populates in the select box.
+function getAllUsecases(){
+	
+	$.ajax({
+		url:"rest/requirements/getUsecases",
+		success:function(response){
+			console.log("success getting usecases");
+			usecase = $("#usecase");
+			$.each(response, function() {
+				usecase.append($("<option />").val(this.id).text(this.name));
+			});
+			
+		},
+		error: function(error){
+			
+			console.log(error);
+		} 
+	});
+
 }

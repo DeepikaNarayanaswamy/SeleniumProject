@@ -14,7 +14,7 @@
 	<div class = "child_container">
 	<h3>Create Flowchart </h3> 
 	
-	<button name = "addPageObject">New Flowchart</button>
+	<a class = "link" href = "Flowchart.jsp">New Flowchart</a>
 	</div>
 	
 	<div>

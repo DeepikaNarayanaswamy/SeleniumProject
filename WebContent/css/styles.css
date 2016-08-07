@@ -70,7 +70,7 @@ nav{
 	left:30%;
 	position: absolute;
 }
-.requriment_container{
+.requriment_container,.flowchart_container{
 background-color: #578EBE;	
 width:80%;
 }

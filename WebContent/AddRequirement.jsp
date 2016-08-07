@@ -39,46 +39,9 @@
 		<span class="fleft width40"><label for="planned_for">Planned for</label></span>
 		<select id = "planned_for">
 			
-=======
-	</span>
-	</div>
-	
-	<div class="clearfix mar10">
-	<span class="fleft width40">
-		<label for="title">Title</label>
-	</span>
-	<span class="fleft">
-		<input type="text" name="title" id="title" size="50" />
-	</span>
-	</div>
-	
-	
-
-	<div class="clearfix">
-	
-	<div class = "fleft width40">
-	<span class="fleft width40"><label for="priority">Select Priority</label></span>
-	<span> 	<select id = "priority">
-			<option value="Low">Low</option>
-		  <option value="Medium">Medium</option>
-		  <option value="High">High</option>
-		  
 		</select>
 	</span>
 	</div>
-
-	<div class="fleft width40">
-		<span class="fleft width40"><label for="planned_for">Planned for</label></span>
-		<select id = "planned_for">
-			<option value="Low">SPrint 1</option>
-		  <option value="Medium">Sprint 2</option>
-		  <option value="High">Sprint 3</option>
->>>>>>> branch 'version1' of https://github.com/DeepikaNarayanaswamy/SeleniumProject
-		  
-		</select>
-	</div>
-	</div>
-
 	<div class="clearfix">
 	
 	<div class = "fleft width40">
@@ -112,6 +75,15 @@
 		  
 		</select></span>
 	</div>
+
+		<div class="clearfix">
+		<span class = "fleft width16"><label for="usecase">Usecase</label></span>
+		<span class = "fleft"><select id = "usecase">
+			
+		  
+		</select></span>
+	</div>
+	
 
 	<div class="clearfix">
 		<span class = "fleft width40"><label for="summary">Summary/Description</label></span>

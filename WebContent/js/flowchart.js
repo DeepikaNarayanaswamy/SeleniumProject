@@ -1,6 +1,7 @@
 var numberOfElements = 0;
 var htmlBase = 'drawingArea';
-var flowchartJSON;
+// This will be used when we create / merge flowchart in Testers dashbaord
+var globalFlowchartId;
 jsPlumb.ready(function () {
 
 	//FIX DOM:
@@ -65,12 +66,16 @@ jsPlumb.ready(function () {
 		addDecision();
 	});
 	
-	$('#saveButton').click(function(){
-		saveFlowchart();
+	$('#createButton').click(function(){
+		createFlowchart();
 	});
 	
 	$('#loadButton').click(function(){
 		loadFlowchart();
+	});
+
+	$('#updateButton').click(function(){
+		updateFlowchart();
 	});
 });
 
@@ -202,7 +207,8 @@ function addDecision(id){
 	jsPlumb.draggable($('#' + id));
 	return id;
 }
-function saveFlowchart(){
+// This function constructs the flowchart json based on the elements in thet dom
+function getFlowchartJSON(){
 	var nodes = []
 	$(".node").each(function (idx, elem) {
 	var $elem = $(elem);
@@ -234,18 +240,172 @@ function saveFlowchart(){
 	var flowChartJson = JSON.stringify(flowChart);
 	//console.log(flowChartJson);
 	
-	$('#jsonOutput').val(flowChartJson);
-	reqId = getParameterByName("reqId");
+	$('#jsonOutput').val(flowChartJson);	var nodes = []
+	$(".node").each(function (idx, elem) {
+		var $elem = $(elem);
+		var endpoints = jsPlumb.getEndpoints($elem.attr('id'));
+		console.log('endpoints of '+$elem.attr('id'));
+		console.log(endpoints);
+			nodes.push({
+				blockId: $elem.attr('id'),
+				nodetype: $elem.attr('data-nodetype'),
+				positionX: parseInt($elem.css("left"), 10),
+				positionY: parseInt($elem.css("top"), 10),
+	            text: $(elem).find("div.detail_text").text()
+			});
+		});
+		var connections = [];
+		$.each(jsPlumb.getConnections(), function (idx, connection) {
+			connections.push({
+				connectionId: connection.id,
+				pageSourceId: connection.sourceId,
+				pageTargetId: connection.targetId
+			});
+		});
+		
+		var flowChart = {};
+		flowChart.nodes = nodes;
+		flowChart.connections = connections;
+		flowChart.numberOfElements = numberOfElements;
+		
+		var flowChartJson = JSON.stringify(flowChart);
+		//console.log(flowChartJson);
+		
+		$('#jsonOutput').val(flowChartJson);
+		return flowChartJson;
+}
+
+
+
+
+// This function saves the new flowchart to db.
+function createFlowchart(flowchartName,flowcharJson){
 	var flowchart = {};
-	flowchart["requirementId"] = reqId;
-	flowchart["flowchartJSON"] = flowChartJson;
+	flowchart["flowchartName"] =  $("#f_title").val();
+	flowchart["flowchartJSON"] = getFlowchartJSON();
+	flowchart["requirementId"] = null;
+	flowchart["usecaseId"] = $("#f_usecase").val();
 	$.ajax({
-		url:"rest/requirements/updateFlowchart",
+		url:"rest/flowchart/save",
 		type:"POST",
 		contentType:"application/json;charset=utf-8",
 		data:JSON.stringify(flowchart),
 		success:function(response){
-					
+			$("#saveButton").addClass("hide");
+			$("#updateButton").removeClass("hide");
+			console.log(response);
+			globalFlowchartId = response.flowchartId;
+		},
+		error: function(error){
+			console.log(error);
+			
+			alert (error.responseText);
+		} 
+	});
+}
+
+function getUsecases(){
+	
+	$.ajax({
+		url:"rest/requirements/getUsecases",
+		success:function(response){
+			console.log("success getting usecases");
+			usecase = $("#f_usecase");
+			$.each(response, function() {
+				usecase.append($("<option />").val(this.id).text(this.name));
+			});
+			
+		},
+		error: function(error){
+			
+			console.log(error);
+		} 
+	});
+}
+
+
+// This function is used to show the flowchart based on the flowchartId
+function loadFlowchart(){
+	//var flowChartJson = $('#jsonOutput').val();
+	$("#startpoint").remove();
+	$("#endpoint").remove();
+	$("#f_title_area").addClass ("hide");
+	$("#createButton").addClass ("hide");
+	$("#updateButton").removeClass("hide");
+	// Get teh flowchartID from URL
+	flowchartId = getParameterByName("flowchartId");
+		if (flowchartId != null && flowchartId != undefined)
+		{
+				$.ajax({
+					url:"rest/flowchart/getFlowchartById?flowchartId="+flowchartId,
+					success:function(response){
+						console.log("success getting flowchart",response);
+						if (response != null){
+							flowchartJSON = response.flowchartJSON;
+							drawFlowchart(flowchartJSON);
+							
+						}
+					},
+					error: function(error){
+						
+						console.log(error);
+					} 
+				});
+	
+		}
+}
+// This method takes the flowchart json and renders the flowchart
+function drawFlowchart(flowchartJSON){
+	var flowChart = JSON.parse(flowchartJSON);
+	var nodes = flowChart.nodes;
+	$.each(nodes, function( index, elem ) {
+		if(elem.nodetype === 'startpoint'){
+				addStartEndNodes('startpoint', elem.positionX, elem.positionY);
+		}else if(elem.nodetype === 'endpoint'){
+			addStartEndNodes('endpoint', elem.positionX, elem.positionY);
+		}else if(elem.nodetype === 'task'){
+			//var id = addTask(elem.blockId);
+			addTask(id, elem.positionX, elem.positionY,elem.text);
+		}else if(elem.nodetype === 'decision'){
+			var id = addDecision(elem.blockId);
+			addTask(id, elem.positionX, elem.positionY);
+		}else{
+			
+		}
+	});
+							
+	var connections = flowChart.connections;
+	$.each(connections, function( index, elem ) {
+		 var connection1 = jsPlumb.connect({
+			source: elem.pageSourceId,
+			target: elem.pageTargetId,
+			anchors: ["BottomCenter", [0.75, 0, 0, -1]]
+			
+		});
+	});
+	
+	numberOfElements = flowChart.numberOfElements;
+}
+// This function will update the flowchart based on the flowchartId
+function updateFlowchart(flowchartId,flowcharJson){
+	flowchartId = getParameterByName("flowchartId");
+	
+	// This will be called when a flowchart of a req. needs to be edited.
+		if (flowchartId == null)
+		{
+			// This means we are in testers dashboard
+			flowchartId= globalFlowchartId;
+		}
+	var flowchart = {};
+	flowchart["flowchartId"] = flowchartId;
+	flowchart["flowchartJSON"] = getFlowchartJSON();
+	$.ajax({
+		url:"rest/flowchart/updateFlowchart",
+		type:"POST",
+		contentType:"application/json;charset=utf-8",
+		data:JSON.stringify(flowchart),
+		success:function(response){
+			alert (response.status);
 			console.log(response);
 			
 		},
@@ -255,63 +415,8 @@ function saveFlowchart(){
 			alert (error.responseText);
 		} 
 	});
+}
 
-	
-}
-function loadFlowchart(){
-	//var flowChartJson = $('#jsonOutput').val();
-	
-	reqId = getParameterByName("reqId");
-	$.ajax({
-		url:"rest/requirements/getFlowchartByReqId?reqId="+reqId,
-		success:function(response){
-			console.log("success getting flowchart",response);
-			if (response != null){
-				flowchartJSON = response.flowchartJSON;
-				
-				var flowChart = JSON.parse(flowchartJSON);
-				var nodes = flowChart.nodes;
-				$.each(nodes, function( index, elem ) {
-					if(elem.nodetype === 'startpoint'){
-							addStartEndNodes('startpoint', elem.positionX, elem.positionY);
-					}else if(elem.nodetype === 'endpoint'){
-						addStartEndNodes('endpoint', elem.positionX, elem.positionY);
-					}else if(elem.nodetype === 'task'){
-						//var id = addTask(elem.blockId);
-						addTask(id, elem.positionX, elem.positionY,elem.text);
-					}else if(elem.nodetype === 'decision'){
-						var id = addDecision(elem.blockId);
-						addTask(id, elem.positionX, elem.positionY);
-					}else{
-						
-					}
-				});
-										
-				var connections = flowChart.connections;
-				$.each(connections, function( index, elem ) {
-					 var connection1 = jsPlumb.connect({
-						source: elem.pageSourceId,
-						target: elem.pageTargetId,
-						anchors: ["BottomCenter", [0.75, 0, 0, -1]]
-						
-					});
-				});
-				
-				numberOfElements = flowChart.numberOfElements;
-				
-			}
-		},
-		error: function(error){
-			
-			console.log(error);
-		} 
-	});
-	
-	
-	
-	
-	
-}
 function repositionElement(id, posX, posY){
 	$('#'+id).css('left', posX);
 	$('#'+id).css('top', posY);

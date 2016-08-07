@@ -3,6 +3,13 @@ package com.mbt.common.dtos;
 public class Flowchart {
 
 	private String flowchartName;
+	private Integer usecaseId;
+	public Integer getUsecaseId() {
+		return usecaseId;
+	}
+	public void setUsecaseId(Integer usecaseId) {
+		this.usecaseId = usecaseId;
+	}
 	public String getFlowchartName() {
 		return flowchartName;
 	}

@@ -11,6 +11,13 @@ public class Requirement {
 	private String fileName;
 	private Integer sprintId;
 	private String priority;
+	private Integer useCaseId;
+	public Integer getUseCaseId() {
+		return useCaseId;
+	}
+	public void setUseCaseId(Integer useCaseId) {
+		this.useCaseId = useCaseId;
+	}
 	public Integer getSprintId() {
 		return sprintId;
 	}

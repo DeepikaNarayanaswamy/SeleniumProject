@@ -16,10 +16,12 @@ import com.mbt.common.dao.ConfigDAO;
 import com.mbt.common.dao.FlowchartDAO;
 import com.mbt.common.dao.RequirementsDAO;
 import com.mbt.common.dao.SprintDAO;
+import com.mbt.common.dao.UsecaseDAO;
 import com.mbt.common.dtos.Flowchart;
 import com.mbt.common.dtos.Requirement;
 import com.mbt.common.dtos.Sprint;
 import com.mbt.common.dtos.TestStep;
+import com.mbt.common.dtos.Usecase;
 import com.mbt.helper.MBTHelper;
 
 @Path("/requirements")
@@ -37,6 +39,7 @@ public class RequirementsService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public JSONObject saveRequirement(Requirement requirement){
 		String status = "success";
+		Integer flowchartId = -1;
 		try{
 		int i;
 		
@@ -50,12 +53,19 @@ public class RequirementsService {
 		// This function will be used to write to the xl file
 		
 		List<TestStep> steps = new MBTHelper().getAllStepsForRequirement(requirement,fileLocationtoSave);
+		// We will generate the flowchart here from the test steops and add to db.
+		
 		JSONObject flowchartJSON = MBTHelper.getFlowchart(steps);
 		Flowchart flowchart = new Flowchart();
 		flowchart.setFlowchartJSON(flowchartJSON.toJSONString());
 		flowchart.setFlowchartName(requirement.getTitle());
 		flowchart.setRequirementId(requirement.getId());
-		FlowchartDAO.saveFlowchart(flowchart);
+		
+		 flowchartId = FlowchartDAO.saveFlowchart(flowchart);
+		// Here we insert into flowchart usecase mapping table
+		UsecaseDAO.insertFlowchartUsecase(flowchartId, requirement.getUseCaseId());
+		// Here we insert into requirment usecase mapping table
+		UsecaseDAO.insertReqUsecase(requirement.getId(),requirement.getUseCaseId());
 		
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -64,6 +74,7 @@ public class RequirementsService {
 		JSONObject jsonStatus = new JSONObject();
 		jsonStatus.put("status",status);
 		jsonStatus.put("req_id",requirement.getId());
+		jsonStatus.put("flowchart_id", flowchartId);
 		return jsonStatus;
 	}
 	@GET
@@ -97,12 +108,7 @@ public class RequirementsService {
 		return RequirementsDAO.getReqByName(title);
 	}
 	
-	@GET
-	@Path("/getFlowchartByReqId")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Flowchart getFlowchartByReqId(@QueryParam("reqId")Integer reqId){
-		return FlowchartDAO.getFlowchart(reqId);
-	}
+	
 	
 	@POST
 	@Path("/updateFlowchart")
@@ -112,5 +118,11 @@ public class RequirementsService {
 		return FlowchartDAO.updateFlowchart(flowchart);
 	}
 	
+	@GET
+	@Path("/getUsecases")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Usecase> getAllUsecases(){
+		return UsecaseDAO.getUsecases();
+	}
 	
 }

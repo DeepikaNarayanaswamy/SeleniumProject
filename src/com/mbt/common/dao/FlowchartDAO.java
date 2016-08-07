@@ -4,27 +4,45 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Statement;
 
 import com.mbt.common.constants.QueryConstants;
 import com.mbt.common.dtos.Flowchart;
-import com.mbt.common.dtos.Requirement;
 import com.mbt.helper.MySQLConnection;
 
 public class FlowchartDAO {
 
-	public static void saveFlowchart (Flowchart flowchart){
+	public static Integer saveFlowchart (Flowchart flowchart){
 		String status = "error";
 		Connection con = MySQLConnection.getConnection();
+		Integer flowchartId = -1;
 		try{
-		PreparedStatement ps = con.prepareStatement(QueryConstants.INSERT_FLOWCHART);
+		PreparedStatement ps = con.prepareStatement(QueryConstants.INSERT_FLOWCHART,Statement.RETURN_GENERATED_KEYS);
 	
 		ps.setString(1, flowchart.getFlowchartName());
 		ps.setString(2,flowchart.getFlowchartJSON());
-		ps.setInt(3,flowchart.getRequirementId());
+		if (flowchart.getRequirementId() != null)
+			ps.setInt(3,flowchart.getRequirementId());
+		else
+		{
+			// Not associated with any req.
+			ps.setInt(3,-1);
+		}
 		ps.executeUpdate();
+		
+		// get the autoincremented flowchart id
+	    ResultSet rs = ps.getGeneratedKeys();
+
+	    if (rs.next()) {
+	    	flowchartId = rs.getInt(1);
+	    } else {
+
+	        // throw an exception from here
+	    }
+		System.out.println(flowchartId);
 		status = "success";
+		
+		
 		}catch(SQLException ex){
 			status = "error";
 			ex.printStackTrace();
@@ -39,16 +57,17 @@ public class FlowchartDAO {
 				e.printStackTrace();
 			}
 		}
+		return flowchartId;
 	}
 	
-	public static Flowchart  getFlowchart(Integer reqId){
+	public static Flowchart  getFlowchart(Integer id){
 		Connection con = MySQLConnection.getConnection();
 		Flowchart flowchart = new Flowchart();
 		
 		try{
 		
 			PreparedStatement stmt = con.prepareStatement(QueryConstants.GET_FLOWCHART);
-			stmt.setInt(1, reqId);
+			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()){
 				flowchart.setFlowchartName(rs.getString(1));
@@ -81,7 +100,7 @@ public class FlowchartDAO {
 	
 		
 		ps.setString(1,flowchart.getFlowchartJSON());
-		ps.setInt(2,flowchart.getRequirementId());
+		ps.setInt(2,flowchart.getFlowchartId());
 		ps.executeUpdate();
 		status = "success";
 		}catch(SQLException ex){
