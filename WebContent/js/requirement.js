@@ -2,9 +2,18 @@ var  requirements;
 var validations;
 requirementsArray = [];
 validationArray = [];
+var globalUseCases = [];
 var hot1;
 // This function is specific to initialize the steps to demo part
 // It also gets the next req id
+
+(function(){
+	requirements = getAllRequirements();
+	//validations =  getAllValidations();
+	getReqId();
+	getAllSprints();
+	getAllUsecases();
+	})();
 function init(){
 	requirements = getAllRequirements();
 	//validations =  getAllValidations();
@@ -269,7 +278,7 @@ function getParameterByName(name, url) {
     name = name.replace(/[\[\]]/g, "\\$&");
     var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
         results = regex.exec(url);
-    if (!results) return null;
+    if (!results	) return null;
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
@@ -281,6 +290,7 @@ function getAllUsecases(){
 		success:function(response){
 			console.log("success getting usecases");
 			usecase = $("#usecase");
+			globalUseCases = response;
 			$.each(response, function() {
 				usecase.append($("<option />").val(this.id).text(this.name));
 			});

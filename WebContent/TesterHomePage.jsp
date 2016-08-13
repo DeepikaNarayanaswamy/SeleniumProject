@@ -38,7 +38,7 @@
 		
 		<div class = "width30 fleft child_container">
 			<h4>TM Workspace</h4>
-		<button name = "tmWorkspace">Get Me there</button>
+		<a href = "TMWorkspace.jsp" class = "link">Get Me there</a>
 			
 		</div>
 	</div>

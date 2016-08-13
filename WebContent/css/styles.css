@@ -108,3 +108,12 @@ width:80%;
 .hide{
 	display:none;
 }
+.usecase-item{
+	width: 20%;
+	height: 50px;
+	background-color: #4169E1;
+	float:left;
+	margin: 10px;
+	color: #ffffff;
+	cursor:pointer;
+}

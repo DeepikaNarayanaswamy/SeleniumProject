@@ -9,6 +9,7 @@
 <script src="js/jquery-ui.js"></script>
 <script src = "js/login.js"></script>
 <script src = "js/requirement.js"></script>
+<script src = "js/tmworkspace.js"></script>
 <script src="js/jsPlumb-2.1.4-min.js"></script>
 <script src = "js/flowchart.js"></script>
 <script src = "assets/js/util.js"></script>
