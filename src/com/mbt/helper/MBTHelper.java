@@ -19,10 +19,12 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
+import bsh.ParseException;
 
 import com.mbt.common.constants.MBTConstants;
 import com.mbt.common.dao.RequirementsDAO;
-import com.mbt.common.dao.ValidationRuleDAO;
 import com.mbt.common.dtos.Requirement;
 import com.mbt.common.dtos.TestStep;
 
@@ -30,7 +32,7 @@ public class MBTHelper {
 
 	 List<TestStep> testStepsFinal = new ArrayList<TestStep>();
 	 boolean startFound = false;
-	public static void writeTestCases(List<TestStep> steps, Requirement req, String fileLocation) {
+	public static void writeTestCases(List<TestStep> steps, Requirement req, String fileLocation,String fileName) {
 
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		XSSFSheet sheet = workbook.createSheet("Test Case Sheet");
@@ -179,9 +181,9 @@ public class MBTHelper {
 
 		}
 		
-
+		String fileNameTosave = req == null ? fileName:req.getFileName();
 		try (FileOutputStream outputStream = new FileOutputStream(
-				fileLocation+req.getFileName()+".xlsx")) {
+				fileLocation+fileNameTosave+".xlsx")) {
 			workbook.write(outputStream);
 			System.out.println("writing to file");
 		} catch (FileNotFoundException e) {
@@ -225,7 +227,7 @@ public class MBTHelper {
 			ex.printStackTrace();
 		}
 		
-		writeTestCases(testStepsFinal, req,fileLocation);
+		writeTestCases(testStepsFinal, req,fileLocation,null);
 		return testStepsFinal;
 	}
 	
@@ -292,6 +294,33 @@ public class MBTHelper {
 		reqa.setTestSteps(RequirementsDAO.getStepsonMainReqId(9893));
 		//List<TestStep> steps = getAllStepsForRequirement(reqa);
 
+	}
+	
+	// This method gets the steps from the json.
+	public static List<TestStep> getStepsFromFlowchartJSON(String flowchartJSON){
+		List<TestStep> steps = new ArrayList<TestStep>();
+		JSONParser parser = new JSONParser();
+		try{
+		JSONObject flowchart = (JSONObject)parser.parse(flowchartJSON);
+		JSONArray nodes = (JSONArray) flowchart.get(MBTConstants.NODES);
+			for (int i=0;i<nodes.size();i++){
+				
+				JSONObject node = (JSONObject)nodes.get(i);
+				if (MBTConstants.NODE_TYPE_START.equals(node.get(MBTConstants.NODE_TYPE))||MBTConstants.NODE_TYPE_END.equals(node.get(MBTConstants.NODE_TYPE))) 
+						continue;
+				TestStep step = new TestStep();
+				step.setDescription((String) node.get(MBTConstants.TEXT));
+				
+				steps.add(step);
+				
+			}
+		}
+		catch (org.json.simple.parser.ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return steps;
 	}
 
 }

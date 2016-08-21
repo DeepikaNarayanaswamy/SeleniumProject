@@ -434,6 +434,7 @@ function updateFlowchart(flowchartId,flowcharJson){
 	var flowchart = {};
 	flowchart["flowchartId"] = flowchartId;
 	flowchart["flowchartJSON"] = getFlowchartJSON();
+	flowchart["flowchartName"] = $("#f_title").val();
 	$.ajax({
 		url:"rest/flowchart/updateFlowchart",
 		type:"POST",

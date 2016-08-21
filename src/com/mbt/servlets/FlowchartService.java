@@ -49,7 +49,9 @@ public class FlowchartService {
 		flowchartId = FlowchartDAO.saveFlowchart(flowchart);
 		// Here we insert into flowchart usecase mapping table
 		UsecaseDAO.insertFlowchartUsecase(flowchartId, flowchart.getUsecaseId());
+		String fileLocationtoSave = ConfigDAO.getFileLocation();
 		
+		MBTHelper.writeTestCases(MBTHelper.getStepsFromFlowchartJSON(flowchart.getFlowchartJSON()), null, fileLocationtoSave,flowchart.getFlowchartName());
 		}catch(Exception ex){
 			ex.printStackTrace();
 			status = "error :" + ex.getMessage();
@@ -79,6 +81,7 @@ public class FlowchartService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	
 	public String updateFlowchartByReqId(Flowchart flowchart){
+		MBTHelper.writeTestCases(MBTHelper.getStepsFromFlowchartJSON(flowchart.getFlowchartJSON()), null, ConfigDAO.getFileLocation(),flowchart.getFlowchartName());
 		return FlowchartDAO.updateFlowchart(flowchart);
 	}
 	
