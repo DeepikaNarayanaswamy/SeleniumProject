@@ -38,7 +38,7 @@
 		 <%= session.getAttribute("username") %></span>
 
 	</header>
-	
+
 	<!--  this should be removed -->
 <div class="window task" style="left: 120px; top:200px; display:none;" data-nodetype="task" id="taskcontainer0">
             <div class="ctrl_container">

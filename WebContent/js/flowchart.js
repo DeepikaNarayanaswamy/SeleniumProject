@@ -3,6 +3,21 @@ var htmlBase = 'drawingArea';
 // This will be used when we create / merge flowchart in Testers dashbaord
 var globalFlowchartId;
 var usecases;
+var workflowConnectorStartpoint = {
+		isSource: true,
+		isTarget: false,
+		maxConnections: 1,				 
+		anchor:"BottomCenter"
+	};
+	
+	var workflowConnectorEndpoint = {
+		isSource: false,
+		isTarget: true,
+		maxConnections: -1,				 
+		anchor:"TopCenter",
+		paintStyle: { fillStyle: 'red' },
+		endpoint: ["Rectangle", {width:12, height:12}]
+	};
 // use to store the flowcharts of a usecase 
 var flowchartUsecases = [];
 jsPlumb.ready(function () {
@@ -87,21 +102,7 @@ jsPlumb.ready(function () {
 
 
 function addStartEndNodes(id,posx,posy){
-    var workflowConnectorStartpoint = {
-		isSource: true,
-		isTarget: false,
-		maxConnections: 1,				 
-		anchor:"BottomCenter"
-	};
-	
-	var workflowConnectorEndpoint = {
-		isSource: false,
-		isTarget: true,
-		maxConnections: -1,				 
-		anchor:"TopCenter",
-		paintStyle: { fillStyle: 'red' },
-		endpoint: ["Rectangle", {width:12, height:12}]
-	};
+    
     taskContainer = document.createElement('div');
     if (id == "startpoint")
     {
@@ -120,7 +121,19 @@ function addStartEndNodes(id,posx,posy){
     $(taskContainer).css({top: posy, left: posx});
     $(taskContainer).attr('id', id);
     $(taskContainer).appendTo('#drawingArea');
-	
+		
+    setTimeout(function(){
+    	jsPlumb.addEndpoint(
+    			$("#"+id),
+    			workflowConnectorStartpoint
+    		);
+    		
+    		jsPlumb.addEndpoint(
+    				$("#"+id),
+    			workflowConnectorEndpoint
+    		); 
+    }, 3000);
+    
 	jsPlumb.draggable($('#' + id));
 }
 
@@ -245,8 +258,7 @@ function getFlowchartJSON(){
 	
 	var flowChartJson = JSON.stringify(flowChart);
 	//console.log(flowChartJson);
-	
-	$('#jsonOutput').val(flowChartJson);	var nodes = []
+	var nodes = []
 	$(".node").each(function (idx, elem) {
 		var $elem = $(elem);
 		var endpoints = jsPlumb.getEndpoints($elem.attr('id'));
@@ -277,7 +289,7 @@ function getFlowchartJSON(){
 		var flowChartJson = JSON.stringify(flowChart);
 		//console.log(flowChartJson);
 		
-		$('#jsonOutput').val(flowChartJson);
+		
 		return flowChartJson;
 }
 
@@ -337,15 +349,16 @@ function getUsecases(){
 
 
 // This function is used to show the flowchart based on the flowchartId
-function loadFlowchart(){
+function loadFlowchart(flowchartId){
 	//var flowChartJson = $('#jsonOutput').val();
+	
 	$("#startpoint").remove();
 	$("#endpoint").remove();
-	$("#f_title_area").addClass ("hide");
+	//$("#f_title_area").addClass ("hide");
 	$("#createButton").addClass ("hide");
 	$("#updateButton").removeClass("hide");
 	// Get teh flowchartID from URL
-	flowchartId = getParameterByName("flowchartId");
+	//flowchartId = getParameterByName("flowchartId");
 		if (flowchartId != null && flowchartId != undefined)
 		{
 				$.ajax({
@@ -354,6 +367,8 @@ function loadFlowchart(){
 						console.log("success getting flowchart",response);
 						if (response != null){
 							flowchartJSON = response.flowchartJSON;
+							$("#f_title").val(response.flowchartName);
+							console.log(response.flowchartName);
 							drawFlowchart(flowchartJSON);
 							
 						}
@@ -373,9 +388,11 @@ function drawFlowchart(flowchartJSON){
 	$.each(nodes, function( index, elem ) {
 		if(elem.nodetype === 'startpoint'){
 				addStartEndNodes('startpoint', elem.positionX, elem.positionY);
+				
+
 		}else if(elem.nodetype === 'endpoint'){
 			addStartEndNodes('endpoint', elem.positionX, elem.positionY);
-		}else if(elem.nodetype === 'task'){
+			}else if(elem.nodetype === 'task'){
 			//var id = addTask(elem.blockId);
 			addTask(id, elem.positionX, elem.positionY,elem.text);
 		}else if(elem.nodetype === 'decision'){
@@ -384,8 +401,14 @@ function drawFlowchart(flowchartJSON){
 		}else{
 			
 		}
-	});
-							
+	}
+	
+		
+	);
+	// dom not havign the elements when adding the endpoints
+	
+
+
 	var connections = flowChart.connections;
 	$.each(connections, function( index, elem ) {
 		 var connection1 = jsPlumb.connect({

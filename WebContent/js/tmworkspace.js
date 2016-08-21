@@ -4,7 +4,7 @@ TMWorkspace = {
 
 			var container = $("#usecase_container");
 			var i;
-			alert("coming");
+			
 			// globalusecases comes from requirements.js
 			for (i=0;i<globalUseCases.length;i++)
 				{
@@ -69,6 +69,10 @@ TMWorkspace = {
 			console.log(flowcharts[j]);
 			$(flistItem).attr('id',"uf_"+usecaseId+"_"+flowcharts[j].flowchartId);
 			$(flistItem).text(flowcharts[j].flowchartName);
+			$(flistItem).addClass('pointer');
+			$(flistItem).click(function(){ // when #showhidecomment is clicked
+		        window.location.href = "Flowchart.jsp?flowchartId="+this.id.split('_')[2]; // load the sample.jsp page in the #chkcomments element
+		    }); 
 			$(flist).append(flistItem);
 		}
 	}

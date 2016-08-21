@@ -294,6 +294,7 @@ function getAllUsecases(){
 			$.each(response, function() {
 				usecase.append($("<option />").val(this.id).text(this.name));
 			});
+			TMWorkspace.loadUsecases();
 			
 		},
 		error: function(error){
