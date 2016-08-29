@@ -3,6 +3,13 @@ var htmlBase = 'drawingArea';
 // This will be used when we create / merge flowchart in Testers dashbaord
 var globalFlowchartId;
 var usecases;
+var validations;
+var chosenStep; 
+// This is for right click show 2 options
+(function() {
+	validations =  getAllValidations();
+    $( "#flowchart-extra" ).accordion({heightStyle: "content"});
+  })();
 var workflowConnectorStartpoint = {
 		isSource: true,
 		isTarget: false,
@@ -137,7 +144,7 @@ function addStartEndNodes(id,posx,posy){
 	jsPlumb.draggable($('#' + id));
 }
 
-function addTask(id,posx,posy,text){
+function addTask(id,posx,posy,text,validationId){
 	if(typeof id === "undefined"){
 		numberOfElements++;
 		id = "taskcontainer" + numberOfElements;
@@ -148,7 +155,44 @@ function addTask(id,posx,posy,text){
     $(taskContainer).attr('id', id);
     $(taskContainer).attr('data-nodetype', 'task');
     $(taskContainer).appendTo('#'+htmlBase).html($(("#taskcontainer0"))[0].innerHTML);
-    $('#'+id).find("div.detail_text").text(text);		
+    $('#'+id).find("div.detail_text").text(text);
+    $('#'+id).find("#validation_container").attr('data',validationId);
+    
+    for (i=0;i<validations.length;i++)
+    	{
+    		if (validations[i].fieldId == validationId)
+    			 $('#'+id).find("#validation_container").text("Validation:"+validations[i].fieldName);
+    	}
+    
+   
+    jsPlumb.bind("contextmenu", function(component, originalEvent) {
+		
+		originalEvent.preventDefault();
+		//console.log(component = component);
+		var connid = component.id;
+		chosenStep = component.elementId;
+		// here we need to open a dialog box saying add validation or add webelement
+		$("#flowchart-extra").removeClass("hide");
+		dialog = $( "#dialog-form" ).dialog({
+			open: function( event, ui ) {
+				addValidation();
+				},
+		      height: 400,
+		      width: 700,
+		      modal: true,
+		      buttons: {
+		        "Save": function(){saveFlowchartDetails()},
+		        Cancel: function() {
+		          dialog.dialog( "close" );
+		        }
+		      },
+		      close: function() {
+		        
+		        
+		      }
+		    });
+		return false;
+		});
 	var taskSourceConnectorEndpoint = {
 		isSource: true,
 		isTarget: false,
@@ -176,6 +220,8 @@ function addTask(id,posx,posy,text){
 	);
 	
 	jsPlumb.draggable($('#' + id));
+	
+	
 	return id;
 }
 function addDecision(id){
@@ -239,7 +285,8 @@ function getFlowchartJSON(){
 			nodetype: $elem.attr('data-nodetype'),
 			positionX: parseInt($elem.css("left"), 10),
 			positionY: parseInt($elem.css("top"), 10),
-            text: $(elem).find("div.detail_text").text()
+            text: $(elem).find("div.detail_text").text(),
+            validationId:$(elem).find("#validation_container").attr('data')
 		});
 	});
 	var connections = [];
@@ -269,7 +316,8 @@ function getFlowchartJSON(){
 				nodetype: $elem.attr('data-nodetype'),
 				positionX: parseInt($elem.css("left"), 10),
 				positionY: parseInt($elem.css("top"), 10),
-	            text: $(elem).find("div.detail_text").text()
+	            text: $(elem).find("div.detail_text").text(),
+	            validationId:$(elem).find("#validation_container").attr('data')
 			});
 		});
 		var connections = [];
@@ -394,7 +442,7 @@ function drawFlowchart(flowchartJSON){
 			addStartEndNodes('endpoint', elem.positionX, elem.positionY);
 			}else if(elem.nodetype === 'task'){
 			//var id = addTask(elem.blockId);
-			addTask(id, elem.positionX, elem.positionY,elem.text);
+			addTask(id, elem.positionX, elem.positionY,elem.text,elem.validationId);
 		}else if(elem.nodetype === 'decision'){
 			var id = addDecision(elem.blockId);
 			addTask(id, elem.positionX, elem.positionY);
@@ -628,4 +676,46 @@ function getFinalJson(teststeps){
 			$("#startpoint").remove();
 			$("#endpoint").remove();
 			createFlowchart(JSON.stringify(flowchart));
+}
+// This functoin is used to add the validations to the accordion
+function addValidation(){
+	
+	var vList = $("#validation-rules");
+	// add the validation fields for the first time in the accordion
+	if ($("#validation-rules").children().length == 0){
+	$.each(validations, function(i)
+			{	
+				var $label = $("<label>").addClass('control control--radio').text(validations[i].fieldName);
+				var $input = $('<input type="radio">').attr({name: 'validation',value : validations[i].fieldId,data:validations[i].fieldName});
+				var $div = $("<div>").addClass("control__indicator");
+				$input.appendTo($label);
+				$div.appendTo($label);
+				
+			   
+			    $label.appendTo(vList);
+			});
+	}
+}
+// this function will take the selected value in the dialog and add to 
+function saveFlowchartDetails(){
+	
+	// Here we will show the validation name in the step
+	$("#"+chosenStep).find("#validation_container").text("Validation : "+$('input[name=validation]:checked').attr('data'));
+	// One more attribute to save the validaiton field.
+	$("#"+chosenStep).find("#validation_container").attr("data",$('input[name=validation]:checked').val());
+}
+function getAllValidations(){
+	
+	$.ajax({
+		url:"rest/validations",
+		success:function(response){
+			console.log("success getting validations");
+			validations = response;
+		},
+		error: function(error){
+			console.log(error);
+		} 
+	});
+	
+	return validations;
 }

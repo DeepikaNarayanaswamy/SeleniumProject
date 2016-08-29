@@ -21,10 +21,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import bsh.ParseException;
-
 import com.mbt.common.constants.MBTConstants;
 import com.mbt.common.dao.RequirementsDAO;
+import com.mbt.common.dao.ValidationRuleDAO;
 import com.mbt.common.dtos.Requirement;
 import com.mbt.common.dtos.TestStep;
 
@@ -166,7 +165,8 @@ public class MBTHelper {
 			cellStepNumber.setCellStyle(cellStyle);
 			XSSFCell cellStepDesc = row.createCell(colnum);
 			cellStepDesc.setCellValue(step.getDescription());
-			/*if (step.getValidation_id() !=null && step.getValidation_id() != 0) {
+			// here we get the validation id of a step and populate it with the validation rules.
+			if (step.getValidation_id() !=null && step.getValidation_id() != 0) {
 				List<String> rules = ValidationRuleDAO
 						.getAllValidationRuleforfield(step.getValidation_id());
 				// in the same col. as the step, write the validation rule
@@ -177,7 +177,7 @@ public class MBTHelper {
 							.createCell(colnum);
 					cellValidationDesc.setCellValue(rules.get(j));
 				}
-			}*/
+			}
 
 		}
 		
@@ -310,7 +310,11 @@ public class MBTHelper {
 						continue;
 				TestStep step = new TestStep();
 				step.setDescription((String) node.get(MBTConstants.TEXT));
-				
+				String validationId = (String)node.get(MBTConstants.VALIDATION_ID);
+				if (validationId != null)
+					step.setValidation_id(Integer.parseInt(validationId));
+				else 
+					step.setValidation_id(0);
 				steps.add(step);
 				
 			}

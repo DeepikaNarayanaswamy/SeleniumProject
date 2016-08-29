@@ -4,12 +4,27 @@
 <%@ page isELIgnored ="false" %>
   <head>
   <link rel="stylesheet" type="text/css" href="css/index.css">
+  
+  <link rel="stylesheet" href="css/jquery-ui.css">
   <link rel="stylesheet" type="text/css" href="css/styles.css">
   </head>
-  
+	  
   <%-- -1 is set when there is no parameter for the flowchart in the request --%>
   	
-   	
+	
+	<div id = "dialog-form">
+	<div id="flowchart-extra" class = "hide">
+  		<h3>Add a Validation Field</h3>
+		  <div id = "validation-rules" class = "control-group">
+			
+		  </div>
+		  <h3>Add a web element</h3>
+		  <div>
+		    <p>Here a text box will come
+		    </p>
+		  </div>
+	</div>
+	</div>   	
    	
   	
    	
@@ -48,7 +63,10 @@
             </div>
             <div class="details_container">
                 <div class="detail_text" contenteditable="true">Enter text</div>
+                 <span id="validation_container"></span>
             </div>
+           
+    
         </div>
 
         <div class="window decision" style="left: 250px; top:300px; display:none;" data-nodetype="decision" id="decisioncontainer0">
@@ -81,7 +99,10 @@
 	
 	</div>
     <script src="js/jquery.1.11.2.min.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    
     <script src="js/jsPlumb-2.1.4-min.js"></script>
+    <script src="contextMenu/contextMenu.js"></script>
     <script src="js/flowchart.js"></script>
     <script src="js/tmworkspace.js"></script>
     <script src="js/requirement.js"></script>

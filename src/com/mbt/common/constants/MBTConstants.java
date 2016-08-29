@@ -51,5 +51,5 @@ public class MBTConstants {
 	public static final String NODE_TYPE_START = "startpoint";
 	public static final String NODE_TYPE_TASK = "task";
 	public static final String NODE_TYPE_END = "endpoint";
-	
+	public static final String VALIDATION_ID = "validationId";
 }

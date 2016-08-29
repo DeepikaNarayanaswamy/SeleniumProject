@@ -28,16 +28,54 @@
   <script data-jsfiddle="common" src="dist/handsontable.js"></script>
 <link data-jsfiddle="common" rel="stylesheet" media="screen" href="dist/handsontable.css">
 <link data-jsfiddle="common" rel="stylesheet" href="css/jquery-ui.css">
-</head>
-	<header>
-		<div class = "fleft logo"> Test Modulate </div>
-		<div class = "fright name">
-		<span> Welcome </span>
-		
-		<span id = "name">
-		 <%= session.getAttribute("username") %></span>
+<link rel="stylesheet" href="css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="css/icomoon.css">
+	<!-- Simple Line Icons -->
+	<link rel="stylesheet" href="css/simple-line-icons.css">
+	<!-- Magnific Popup -->
+	<link rel="stylesheet" href="css/magnific-popup.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="css/bootstrap.css">
 
+	
+
+	
+	<link rel="stylesheet" href="css/stylemain.css">
+
+	<!-- Styleswitcher ( This style is for demo purposes only, you may delete this anytime. ) -->
+	
+	<!-- End demo purposes only -->
+
+
+
+	<!-- Modernizr JS -->
+	<script src="js/modernizr-2.6.2.min.js"></script>
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+<header role="banner" id="fh5co-header">
+			<div class="container">
+				<!-- <div class="row"> -->
+			    <nav class="navbar navbar-default">
+		        <div class="navbar-header">
+		        	<!-- Mobile Toggle Menu Button -->
+					<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><i></i></a>
+		         <a class="navbar-brand" href="login.jsp">Test Modulate</a>
+		         <span id = "name">
+		 			<%= session.getAttribute("username") %></span>
+		         
+	 			</div>
+		        </nav>
+			  <!-- </div> -->
+		  </div>
 	</header>
+		
+	
+	
 
 	<!--  this should be removed -->
 <div class="window task" style="left: 120px; top:200px; display:none;" data-nodetype="task" id="taskcontainer0">
