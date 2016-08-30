@@ -398,7 +398,7 @@ h1, h2, h3, h4, h5, h6 {
   background-image: -ms-repeating-linear-gradient(top left, #3f95ea 0%, #52d3aa 100%);
 }
 #fh5co-home, #fh5co-home .text-wrap {
-  height: 900px;
+	 height: 665px;
 }
 #fh5co-home .text-wrap {
   display: table;
@@ -620,7 +620,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #fh5co-services, #fh5co-work, #fh5co-counters {
-  padding: 7em 0;
+	height:665px;
+ /* padding: 7em 0;*/
 }
 @media screen and (max-width: 768px) {
   #fh5co-services, #fh5co-work, #fh5co-counters {
@@ -859,7 +860,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #fh5co-work {
-  overflow: hidden;
+  
   position: relative;
   color: rgba(255, 255, 255, 0.8);
   background-color: #52d3aa;
@@ -873,8 +874,8 @@ h1, h2, h3, h4, h5, h6 {
   background-image: -ms-repeating-linear-gradient(top left, #3f95ea 0%, #52d3aa 100%);
 }
 #fh5co-work a {
-  color: rgba(255, 255, 255, 0.5);
-  text-decoration: underline;
+/*  color: rgba(255, 255, 255, 0.5);
+  text-decoration: underline;*/
 }
 #fh5co-work a:hover {
   color: white;
@@ -890,7 +891,6 @@ h1, h2, h3, h4, h5, h6 {
   content: "";
   z-index: 3;
   display: inline-block;
-  height: 70px;
   padding: 0;
   width: 101%;
 }
@@ -913,7 +913,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 #fh5co-work .fh5co-project-item {
   display: block;
-  width: 100%;
+  width: 30%;
   position: relative;
   top: 0;
   background: #fff;
@@ -927,6 +927,9 @@ h1, h2, h3, h4, h5, h6 {
   -webkit-transition: 0.3s;
   -o-transition: 0.3s;
   transition: 0.3s;
+  color:#7f7f7f;
+  text-align:center;
+  padding-top:2%;
 }
 #fh5co-work .fh5co-project-item img {
   z-index: 8;
@@ -969,10 +972,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .fh5co-person {
 	border: 2px solid #f2f2f2;
-    padding: 80px 30px 30px 30px;
+    padding: 30px;
     float: left;
     position: relative;
     background-color: #fff;
+    text-align:center;
  }
 @media screen and (max-width: 992px) {
   .fh5co-person {
@@ -1051,19 +1055,17 @@ h1, h2, h3, h4, h5, h6 {
 .section-heading {
   float: left;
   width: 100%;
-  padding-bottom: 50px;
-  margin-bottom: 50px;
   clear: both;
 }
 .section-heading h2 {
-  margin: 0 0 30px 0;
+
   font-size: 50px;
   font-weight: 300;
   color: #444;
   text-transform: uppercase;
   position: relative;
   display: block;
-  padding-bottom: 20px;
+
   line-height: 1.5;
 }
 .section-heading h2.left-border:after {

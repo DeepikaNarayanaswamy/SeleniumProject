@@ -53,34 +53,7 @@
 	<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600,400italic,700' rel='stylesheet' type='text/css'>
 	
 	<!-- Animate.css -->
-	<link rel="stylesheet" href="css/animate.css">
-	<!-- Icomoon Icon Fonts-->
-	<link rel="stylesheet" href="css/icomoon.css">
-	<!-- Simple Line Icons -->
-	<link rel="stylesheet" href="css/simple-line-icons.css">
-	<!-- Magnific Popup -->
-	<link rel="stylesheet" href="css/magnific-popup.css">
-	<!-- Bootstrap  -->
-	<link rel="stylesheet" href="css/bootstrap.css">
-
 	
-
-	
-	<link rel="stylesheet" href="css/stylemain.css">
-
-	<!-- Styleswitcher ( This style is for demo purposes only, you may delete this anytime. ) -->
-	
-	<!-- End demo purposes only -->
-
-
-
-	<!-- Modernizr JS -->
-	<script src="js/modernizr-2.6.2.min.js"></script>
-	<!-- FOR IE9 below -->
-	<!--[if lt IE 9]>
-	<script src="js/respond.min.js"></script>
-	<![endif]-->
-
 	</head>
 	<body>
 	<%@ include file="header.jsp" %>

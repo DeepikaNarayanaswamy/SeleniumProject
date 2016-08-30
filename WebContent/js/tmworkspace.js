@@ -11,7 +11,7 @@ TMWorkspace = {
 					var usecasebox = document.createElement('div');
 					$(usecasebox).text(globalUseCases[i].name);
 					$(usecasebox).attr("id","usecase_"+globalUseCases[i].id);
-					$(usecasebox).addClass("usecase-item");
+					$(usecasebox).addClass("col-md-2 fh5co-project-item usecase-item");
 					$(usecasebox).click(function(){
 						TMWorkspace.getFlowchartbyusecase(this.id.split('_')[1]);
 					});

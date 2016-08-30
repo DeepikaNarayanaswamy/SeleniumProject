@@ -47,12 +47,19 @@
 
 </html> --%>
 <%@ include file="header.jsp" %>
-<section id="fh5co-home" data-section="home" style="background-image: url(images/full_image_2.jpg);" data-stellar-background-ratio="0.5">
+<section id = "fh5co-work" data-section="home"  data-stellar-background-ratio="0.5">
 		<div class="gradient"></div>
-		<div class="container">
+		<div class="container"  >
 			<div class="text-wrap">
-				<div class="text-inner">
-					<div class="row .fh5co-block">
+				
+				<div class="row">
+					<div class="col-md-12 section-heading text-center">
+						<h2 class="to-animate fadeInUp animated">Dashboard</h2>
+						
+					</div>
+				</div>
+			
+					<div class="row fh5co-block">
 						<div class = "col-md-4 fh5co-person">
 							<div class="fh5co-text">
 								<i class="fh5co-intro-icon icon-wrench"></i>
@@ -77,7 +84,7 @@
 						</div>
 					</div>
 				</div>
-				</div>
+				
 			</div>
 		</div>
 	

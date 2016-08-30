@@ -435,11 +435,11 @@ function drawFlowchart(flowchartJSON){
 	var nodes = flowChart.nodes;
 	$.each(nodes, function( index, elem ) {
 		if(elem.nodetype === 'startpoint'){
-				addStartEndNodes('startpoint', elem.positionX, elem.positionY);
+				addStartEndNodes('startpoint', elem.positionY, elem.positionX);
 				
 
 		}else if(elem.nodetype === 'endpoint'){
-			addStartEndNodes('endpoint', elem.positionX, elem.positionY);
+			addStartEndNodes('endpoint', elem.positionY, elem.positionX);
 			}else if(elem.nodetype === 'task'){
 			//var id = addTask(elem.blockId);
 			addTask(id, elem.positionX, elem.positionY,elem.text,elem.validationId);

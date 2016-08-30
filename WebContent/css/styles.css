@@ -110,6 +110,9 @@ width:80%;
 	color: #ffffff;
 	cursor:pointer;
 }
+select{
+	color:#b3b3b3 !important;
+}
 .pointer{
 	cursor:pointer;
 }

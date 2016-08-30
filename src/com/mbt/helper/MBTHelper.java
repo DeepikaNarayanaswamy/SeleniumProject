@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -31,7 +32,8 @@ public class MBTHelper {
 
 	 List<TestStep> testStepsFinal = new ArrayList<TestStep>();
 	 boolean startFound = false;
-	public static void writeTestCases(List<TestStep> steps, Requirement req, String fileLocation,String fileName) {
+	 // test case id is the same as flowchart id
+	public static void writeTestCases(List<TestStep> steps, Requirement req, String fileLocation,String fileName,Integer testcaseId) {
 
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		XSSFSheet sheet = workbook.createSheet("Test Case Sheet");
@@ -40,28 +42,38 @@ public class MBTHelper {
 		int columnCount = 0;
 		
 		// autosize all the ceells
-		for (int i=0;i<13;i++){
-			sheet.autoSizeColumn(i);
-		}
 		
 		
 		Row headerRow = sheet.createRow(0);
 		XSSFCellStyle cellStyle = workbook.createCellStyle();
-		XSSFColor myColor = new XSSFColor(Color.BLUE);
-		cellStyle.setFillBackgroundColor(
+		byte[] rgb = new byte[3];
+		rgb[0] = (byte) 57; // red
+		rgb[1] = (byte) 73; // green
+		rgb[2] = (byte) 171; // blue
+		XSSFColor myColor = new XSSFColor(rgb); // #f2dcdb
+		cellStyle.setFillForegroundColor(myColor);
+		cellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		cellStyle.setWrapText(true);
+		/*cellStyle.setFillBackgroundColor(
 	      myColor );
 	      cellStyle.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND);
-	     
+	    */ 
 	      
 	        Font font = workbook.createFont();
 	        font.setColor(HSSFColor.WHITE.index);
 	        cellStyle.setFont(font);
+
+        Cell serialNumber = headerRow.createCell(MBTConstants.SERIAL_NUMBER_CELL_NUMBER);
+        serialNumber.setCellValue(MBTConstants.SERIAL_NUMBER);
+
+        serialNumber.setCellStyle(cellStyle);
+
 		Cell testCaseIdentifier = headerRow.createCell(MBTConstants.TEST_CASE_ID_CELL_NUMBER);
 		testCaseIdentifier.setCellValue(MBTConstants.TEST_CASE_ID);
 
 		testCaseIdentifier.setCellStyle(cellStyle);
 
-		Cell requriementId = headerRow.createCell(MBTConstants.REQUIREMENT_ID_CELL_NUMBER);
+/*		Cell requriementId = headerRow.createCell(MBTConstants.REQUIREMENT_ID_CELL_NUMBER);
 		requriementId.setCellValue(MBTConstants.REQUIREMENT_ID);
 
 		requriementId.setCellStyle(cellStyle);
@@ -70,7 +82,7 @@ public class MBTHelper {
 		requriementName.setCellValue(MBTConstants.REQUIREMENT_NAME);
 
 		requriementName.setCellStyle(cellStyle);
-
+*/
 		Cell testCaseName = headerRow.createCell(MBTConstants.TEST_CASE_NAME_CELL_NUMBER);
 		testCaseName.setCellValue(MBTConstants.TEST_CASE_NAME);
 
@@ -107,7 +119,7 @@ public class MBTHelper {
 
 		expectedResult.setCellStyle(cellStyle);
 		
-		Cell baReviewComment = headerRow.createCell(MBTConstants.BA_REVIEW_COMMENTS_CELL_NUMBER);
+/*		Cell baReviewComment = headerRow.createCell(MBTConstants.BA_REVIEW_COMMENTS_CELL_NUMBER);
 		baReviewComment.setCellValue(MBTConstants.BA_REVIEW_COMMENTS);
 
 		baReviewComment.setCellStyle(cellStyle);
@@ -117,7 +129,7 @@ public class MBTHelper {
 
 		status.setCellStyle(cellStyle);
 
-
+*/
 		/*
 		 * Cell testData = headerRow.createCell(5);
 		 * 
@@ -153,18 +165,51 @@ public class MBTHelper {
 		 * function.setCellStyle(cellStyle);
 		 */int colnum = MBTConstants.TEST_STEP_NO_CELL_NUMBER;
 		System.out.println("Number of steps = "+steps.size());
+		// Auto size of the col. based on the text
+		for (int i=0;i<13;i++){
+			sheet.autoSizeColumn(i);
+		}
+		XSSFCellStyle cellStyleStep = workbook.createCellStyle();
+		cellStyleStep.setWrapText(true);
+		XSSFRow row = sheet.createRow(++rowCount);
+		
+		colnum = MBTConstants.TEST_CASE_ID_CELL_NUMBER;
+		XSSFCell cellTestCaseID = row.createCell(colnum);
+		cellTestCaseID.setCellValue(testcaseId);
+		cellTestCaseID.setCellStyle(cellStyleStep);
+		
+		
+		
+		colnum = MBTConstants.TEST_CASE_NAME_CELL_NUMBER;
+		XSSFCell cellTestCaseName = row.createCell(colnum);
+		cellTestCaseName.setCellValue(fileName);
+		cellTestCaseName.setCellStyle(cellStyleStep);
+		
+		colnum = MBTConstants.TEST_SCRIPT_NAME_CELL_NUMBER;
+		
+		XSSFCell cellScriptName = row.createCell(colnum);
+		cellScriptName.setCellValue(fileName);
+		cellScriptName.setCellStyle(cellStyleStep);
+	
+		
+		colnum = MBTConstants.TEST_SCRIPT_DESCRIPTION_CELL_NUMBER;
+		XSSFCell cellScriptDesc = row.createCell(colnum);
+		cellScriptDesc.setCellValue(fileName + "desc desc");
+		cellScriptDesc.setCellStyle(cellStyleStep);
+		
+		
 		for (int i = 0; i < steps.size(); i++) {
 			columnCount = 0;
 			colnum = MBTConstants.TEST_STEP_NO_CELL_NUMBER;
-			XSSFRow row = sheet.createRow(++rowCount);
 			XSSFCell cellStepNumber = row.createCell(colnum);
 			// next ccol. write the step description
 			colnum = MBTConstants.TEST_STEP_DESCRIPTION_CELL_NUMBER;
 			TestStep step = steps.get(i);
 			cellStepNumber.setCellValue(i + 1);
-			cellStepNumber.setCellStyle(cellStyle);
+			//cellStepNumber.setCellStyle(cellStyle);
 			XSSFCell cellStepDesc = row.createCell(colnum);
 			cellStepDesc.setCellValue(step.getDescription());
+			cellStepDesc.setCellStyle(cellStyleStep);
 			// here we get the validation id of a step and populate it with the validation rules.
 			if (step.getValidation_id() !=null && step.getValidation_id() != 0) {
 				List<String> rules = ValidationRuleDAO
@@ -176,9 +221,11 @@ public class MBTHelper {
 					XSSFCell cellValidationDesc = validRow
 							.createCell(colnum);
 					cellValidationDesc.setCellValue(rules.get(j));
+					cellValidationDesc.setCellStyle(cellStyleStep);
 				}
 			}
-
+			row = sheet.createRow(++rowCount);
+			
 		}
 		
 		String fileNameTosave = req == null ? fileName:req.getFileName();
@@ -227,7 +274,7 @@ public class MBTHelper {
 			ex.printStackTrace();
 		}
 		
-		writeTestCases(testStepsFinal, req,fileLocation,null);
+		writeTestCases(testStepsFinal, req,fileLocation,null,null);
 		return testStepsFinal;
 	}
 	
