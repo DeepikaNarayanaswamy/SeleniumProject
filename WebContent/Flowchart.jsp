@@ -54,6 +54,7 @@
 						</div>
 							<div class = "form-group">
 							    <button id="createButton" class = "btn btn-primary">Create New Flowchart</button>
+				    			<button id="mergeButton" class = "btn btn-primary">Merge New Flowchart</button>
 				        	    <button id="updateButton" class = "btn btn-primary hide">Update Flowchart</button>
 				           	</div>
 				
@@ -64,8 +65,8 @@
 				
 			     
 			     
-			     <div class = "row">
-	<div id = "parent" class = "col-md-offset-1 " style="height:500px;overflow:scroll !important;position:relative;background-color:#fff">
+			     <div class = "row flowchartArea">
+	<div id = "parent" class = "col-md-offset-2" style="height:500px;overflow:scroll !important;position:relative;background-color:#fff">
     <div id="drawingArea" style="height:500px">
       
 
@@ -101,22 +102,20 @@
     	   <div class="endpoint point window node" style="left: 150px; top:400px" data-nodetype="endpoint" id="endpoint">End</div>   
     </div>
     </div>
-         
-			
+  		</div>
+  		
 				<div id = "merge_container" class = "hide">
-					
-					<div>
+					<select id = "f_usecase_merge" class="col-md-4 form-control"></select>										
+<!-- 					<div>
 						<button onclick = "getFlowchartbyusecase()" id = "get_flowchart">Get flowcharts</button>
 					</div>
-					
+ -->				<ul id=  "flowchart_list" class = "col-md-4 connectedSortable">
+ 					</ul>
+ 					<ul id = "merge_list" class = "col-md-4 connectedSortable" style = "height:50px;border:1px solid white">
+ 					</ul>
+ 					<button id="mergeAll" class = "btn btn-primary">Done,Merge</button>
 				</div>
-			</div>
-
-			      
-			      
-			      
-			      
-				 </div>
+			 </div>
 				<%-- <div class = "row">
 			      <div class = "col-md-4 text-center">
 				      	<form>

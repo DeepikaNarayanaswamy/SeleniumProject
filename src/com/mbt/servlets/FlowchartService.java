@@ -59,6 +59,7 @@ public class FlowchartService {
 		JSONObject jsonStatus = new JSONObject();
 		jsonStatus.put("status",status);
 		jsonStatus.put("flowchartId", flowchartId);
+		System.out.println(jsonStatus);
 		return jsonStatus;
 	}
 	@GET

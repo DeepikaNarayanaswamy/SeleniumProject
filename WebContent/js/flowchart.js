@@ -91,7 +91,8 @@ jsPlumb.ready(function () {
 		addDecision();
 	});
 	
-	$('#createButton').click(function(){
+	$('#createButton').click(function(e){
+		 e.preventDefault(); 
 		createFlowchart();
 	});
 	
@@ -102,8 +103,17 @@ jsPlumb.ready(function () {
 	$('#updateButton').click(function(){
 		updateFlowchart();
 	});
-	$("#mergeButton").click(function(){
+	$("#mergeButton").click(function(e){
+		e.preventDefault();
 		merge();
+	});
+	$("#mergeAll").click(function(e){
+		e.preventDefault();
+		mergeAll();
+	});
+	$("#f_usecase_merge").change(function(){
+		//console.log();
+		getFlowchartbyusecase($( "#f_usecase_merge option:selected" ).val());
 	});
 });
 
@@ -340,10 +350,6 @@ function getFlowchartJSON(){
 		
 		return flowChartJson;
 }
-
-
-
-
 // This function saves the new flowchart to db.
 function createFlowchart(flowcharJson){
 	var flowchart = {};
@@ -361,16 +367,17 @@ function createFlowchart(flowcharJson){
 		contentType:"application/json;charset=utf-8",
 		data:JSON.stringify(flowchart),
 		success:function(response){
+			
 			$("#saveButton").addClass("hide");
 			$("#updateButton").removeClass("hide");
-			console.log(response);
+			console.log("success after saving"+response);
 			globalFlowchartId = response.flowchartId;
 			loadFlowchartJSP(globalFlowchartId);
 		},
 		error: function(error){
 			console.log(error);
 			
-			alert (error.responseText);
+			//alert (error.responseText);
 		} 
 	});
 }
@@ -404,6 +411,7 @@ function loadFlowchart(flowchartId){
 	$("#endpoint").remove();
 	//$("#f_title_area").addClass ("hide");
 	$("#createButton").addClass ("hide");
+	$("#mergeButton").addClass ("hide");
 	$("#updateButton").removeClass("hide");
 	// Get teh flowchartID from URL
 	//flowchartId = getParameterByName("flowchartId");
@@ -509,24 +517,38 @@ function repositionElement(id, posX, posY){
 
 function merge(){
 	var i;
-	$("#merge_container").remove("input");
-	// usecases is a global object taht is is populated by getusecases() 
+	$("#merge_container").removeClass("hide");
+	$(".flowchartArea").hide();
+	usecase = $("#f_usecase_merge");
+	$(usecase).empty();
 	for (i=0;i<usecases.length;i++){
+		
+		usecase.append($("<option />").val(usecases[i].id).text(usecases[i].name));
+	}
+	
+	
+	    $( "#flowchart_list, #merge_list" ).sortable({
+	      connectWith: ".connectedSortable"
+	    }).disableSelection();
+	  
+	// usecases is a global object taht is is populated by getusecases() 
+	/*for (i=0;i<usecases.length;i++){
 		
 		var usecaseCheckbox = $('<input type="checkbox" name="usecase" />');
 		$(usecaseCheckbox).attr("value",usecases[i].id);
 		$("#merge_container").removeClass("hide");
 		$("#merge_container").append(usecaseCheckbox).append( usecases[i].name);
-	}
+	}*/
 }
 
 
 // Here we will get the flowcharts of a usecase and put in a json object.
-function getFlowchartbyusecase(){
-	$('input[name="usecase"]:checked').each(function() {
+function getFlowchartbyusecase(usecaseId){
+	
+	
 			
 		$.ajax({
-			url:"rest/flowchart/getFlowchartsByUsecaseId?usecaseId="+this.value,
+			url:"rest/flowchart/getFlowchartsByUsecaseId?usecaseId="+usecaseId,
 			success:function(response){
 				console.log("success getting flowchart",response);
 				if (response.length != 0){
@@ -545,36 +567,39 @@ function getFlowchartbyusecase(){
 			} 
 		});
 		
-		});
+	
 	
 }
 
 function showFlowchartUsecaselist (flowchartUsecases){
+	
 if (flowchartUsecases.length != 0){
-		
+	$("#flowchart_list").empty();
 		for (i=0;i<flowchartUsecases.length;i++){
-			var u_fc_list = document.createElement("div");
+			//var u_fc_list = document.createElement("div");
 			
 			var usecaseName = document.createElement("span");
 			
-			for (k=0;k<usecases.length;k++){
+			/*for (k=0;k<usecases.length;k++){
 				if (flowchartUsecases[i].usecaseId == usecases[k].id)
 					{
 					usecaseName.innerText = usecases[k].name;
 					break;
 					}
-			}
-			$(u_fc_list).append(usecaseName);
+			}*/
+			//$(u_fc_list).append(usecaseName);
 			for (j=0;j<flowchartUsecases[i].flowcharts.length;j++){
 				
-				var usecaseCheckbox = $('<input type="checkbox" name="u_fc" />');
-				$(usecaseCheckbox).attr("value",flowchartUsecases[i].usecaseId + "_"+flowchartUsecases[i].flowcharts[j].flowchartId);
+				var fl_list_item = $('<li name="u_fc" class = "ui-state-default" value ='+flowchartUsecases[i].usecaseId+"_"+flowchartUsecases[i].flowcharts[j].flowchartId+'/>');
+				fl_list_item.text( flowchartUsecases[i].flowcharts[j].flowchartName);
+				//$(usecaseCheckbox).attr("value",flowchartUsecases[i].usecaseId + "_"+flowchartUsecases[i].flowcharts[j].flowchartId);
 				
 				$("#flowchart_list").removeClass("hide");
-				$(u_fc_list).append(usecaseCheckbox).append( flowchartUsecases[i].flowcharts[j].flowchartName);
+				$("#flowchart_list").append(fl_list_item);
+				//$(u_fc_list).append(usecaseCheckbox).append();
 				
 			}
-			$("#flowchart_list").append(u_fc_list);
+			//;
 		}
 	}
 
@@ -584,9 +609,10 @@ function mergeAll(){
 	// basically we should get the text in the flwochart json. And finally construct the json similart to what we have dione in java
 	var teststeps = [];
 	teststeps.push("start");
-	$('input[name="u_fc"]:checked').each(function() {
+	
+	$('#merge_list li').each(function() {
 		
-		ufArray = this.value.split("_");
+		ufArray = $(this).attr("value").split("_");
 		// get the usecase id & flowchart id
 		usecaseId = ufArray[0];
 		flowchartId = ufArray[1];
@@ -613,7 +639,6 @@ function mergeAll(){
 			}
 
 		}
-		
 	});
 	teststeps.push("end");
 	console.log(teststeps);
