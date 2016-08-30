@@ -38,13 +38,13 @@ jsPlumb.ready(function () {
 	jsPlumb.importDefaults({
 		Endpoint : ["Dot", {radius:8}],
 		EndpointStyle : { fillStyle : "#4A6" },
-		HoverPaintStyle : {strokeStyle:"#42a62c", lineWidth:8 },
+		HoverPaintStyle : {strokeStyle:"#eee", lineWidth:2 },
 		Connector:[ "Flowchart" ],
 		ConnectionOverlays : [
 			[ "Arrow", { 
 				location:1,
 				id:"arrow",
-				length:20,
+				length:10,
 				foldback:0.4
 			} ]
 		]
@@ -439,7 +439,7 @@ function drawFlowchart(flowchartJSON){
 				
 
 		}else if(elem.nodetype === 'endpoint'){
-			addStartEndNodes('endpoint', elem.positionY, elem.positionX);
+			addStartEndNodes('endpoint', elem.positionX, elem.positionY);
 			}else if(elem.nodetype === 'task'){
 			//var id = addTask(elem.blockId);
 			addTask(id, elem.positionX, elem.positionY,elem.text,elem.validationId);

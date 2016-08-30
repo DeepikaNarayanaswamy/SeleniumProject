@@ -197,7 +197,7 @@ public class MBTHelper {
 		cellScriptDesc.setCellValue(fileName + "desc desc");
 		cellScriptDesc.setCellStyle(cellStyleStep);
 		
-		
+		int stepCount = 1;
 		for (int i = 0; i < steps.size(); i++) {
 			columnCount = 0;
 			colnum = MBTConstants.TEST_STEP_NO_CELL_NUMBER;
@@ -205,7 +205,7 @@ public class MBTHelper {
 			// next ccol. write the step description
 			colnum = MBTConstants.TEST_STEP_DESCRIPTION_CELL_NUMBER;
 			TestStep step = steps.get(i);
-			cellStepNumber.setCellValue(i + 1);
+			cellStepNumber.setCellValue(stepCount++);
 			//cellStepNumber.setCellStyle(cellStyle);
 			XSSFCell cellStepDesc = row.createCell(colnum);
 			cellStepDesc.setCellValue(step.getDescription());
@@ -217,8 +217,11 @@ public class MBTHelper {
 				// in the same col. as the step, write the validation rule
 				for (int j = 0; j < rules.size(); j++) {
 					XSSFRow validRow = sheet.createRow(++rowCount);
-					
-					XSSFCell cellValidationDesc = validRow
+					colnum = MBTConstants.TEST_STEP_NO_CELL_NUMBER;
+					 cellStepNumber = validRow.createCell(colnum);
+					 cellStepNumber.setCellValue(stepCount++);
+					 colnum = MBTConstants.TEST_STEP_DESCRIPTION_CELL_NUMBER;
+					 XSSFCell cellValidationDesc = validRow
 							.createCell(colnum);
 					cellValidationDesc.setCellValue(rules.get(j));
 					cellValidationDesc.setCellStyle(cellStyleStep);

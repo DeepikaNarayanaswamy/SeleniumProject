@@ -78,11 +78,4 @@
 	
 
 	<!--  this should be removed -->
-<div class="window task" style="left: 120px; top:200px; display:none;" data-nodetype="task" id="taskcontainer0">
-            <div class="ctrl_container">
-                <div class="button_remove">x</div>
-            </div>
-            <div class="details_container">
-                <div class="detail_text" contenteditable="true">Enter text</div>
-            </div>
-        </div>
+

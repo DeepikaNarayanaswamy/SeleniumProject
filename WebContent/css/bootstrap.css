@@ -3139,7 +3139,7 @@ output {
   padding: 10px 20px;
   font-size: 14px;
   line-height: 1.42857;
-  color: #555555;
+  color: #fff;
   background-color: #fff;
   background-image: none;
   border: 1px solid #ccc;
@@ -3157,14 +3157,14 @@ output {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
 }
 .form-control::-moz-placeholder {
-  color: #999;
+  color: #fff;
   opacity: 1;
 }
 .form-control:-ms-input-placeholder {
-  color: #999;
+  color: #fff;
 }
 .form-control::-webkit-input-placeholder {
-  color: #999;
+  color: #fff;
 }
 .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
   background-color: #eeeeee;
@@ -3553,7 +3553,7 @@ select[multiple].input-lg,
 @media (min-width: 768px) {
   .form-inline .form-group {
     display: inline-block;
-    margin-bottom: 0;
+    margin-bottom: 5px;
     vertical-align: middle;
   }
   .form-inline .form-control {
