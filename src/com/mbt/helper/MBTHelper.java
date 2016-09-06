@@ -1,11 +1,13 @@
 package com.mbt.helper;
 
-import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
@@ -376,6 +378,188 @@ public class MBTHelper {
 		
 		return steps;
 	}
+	
+	
+	// this function will generate a full testcases 
+	
+	public static void generateTestCase(HashMap<Integer,List>flowchartSteps,String fileLocation,String fileName){
+	
+		
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		XSSFSheet sheet = workbook.createSheet("Test Case Sheet");
+		short color = 24;
+		
+		int flowchartcount;
+		// autosize all the ceells
+		System.out.println("map size" + flowchartSteps.size());
+		Set flowchartIds = flowchartSteps.keySet();
+		Iterator iter = flowchartIds.iterator();
+		int rowCount = 0;
+		while(iter.hasNext()){
+			System.out.println("coming flowhart");
+			Integer fId = (Integer) iter.next();
+		
+			
+			int columnCount = 0;
+			Row headerRow = sheet.createRow(rowCount);
+			XSSFCellStyle cellStyle = workbook.createCellStyle();
+			byte[] rgb = new byte[3];
+			rgb[0] = (byte) 57; // red
+			rgb[1] = (byte) 73; // green
+			rgb[2] = (byte) 171; // blue
+			XSSFColor myColor = new XSSFColor(rgb); // #f2dcdb
+			cellStyle.setFillForegroundColor(myColor);
+			cellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+			cellStyle.setWrapText(true);
+			/*cellStyle.setFillBackgroundColor(
+	      myColor );
+	      cellStyle.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND);
+	    */ 
+	      
+	        Font font = workbook.createFont();
+	        font.setColor(HSSFColor.WHITE.index);
+	        cellStyle.setFont(font);
+	     
+        Cell serialNumber = headerRow.createCell(MBTConstants.SERIAL_NUMBER_CELL_NUMBER);
+        serialNumber.setCellValue(MBTConstants.SERIAL_NUMBER);
 
+        serialNumber.setCellStyle(cellStyle);
+
+		Cell testCaseIdentifier = headerRow.createCell(MBTConstants.TEST_CASE_ID_CELL_NUMBER);
+		testCaseIdentifier.setCellValue(MBTConstants.TEST_CASE_ID);
+
+		testCaseIdentifier.setCellStyle(cellStyle);
+
+/*		Cell requriementId = headerRow.createCell(MBTConstants.REQUIREMENT_ID_CELL_NUMBER);
+		requriementId.setCellValue(MBTConstants.REQUIREMENT_ID);
+
+		requriementId.setCellStyle(cellStyle);
+
+		Cell requriementName = headerRow.createCell(MBTConstants.REQUIREMENT_NAME_CELL_NUMBER);
+		requriementName.setCellValue(MBTConstants.REQUIREMENT_NAME);
+
+		requriementName.setCellStyle(cellStyle);
+*/
+		Cell testCaseName = headerRow.createCell(MBTConstants.TEST_CASE_NAME_CELL_NUMBER);
+		testCaseName.setCellValue(MBTConstants.TEST_CASE_NAME);
+
+		testCaseName.setCellStyle(cellStyle);
+
+		Cell testPhaseName = headerRow.createCell(MBTConstants.TEST_PHASE_NAME_CELL_NUMBER);
+		testPhaseName.setCellValue(MBTConstants.TEST_PHASE_NAME);
+
+		testPhaseName.setCellStyle(cellStyle);
+		
+		Cell testScriptName = headerRow.createCell(MBTConstants.TEST_SCRIPT_NAME_CELL_NUMBER);
+		testScriptName.setCellValue(MBTConstants.TEST_SCRIPT_NAME);
+
+		testScriptName.setCellStyle(cellStyle);
+
+		
+		Cell testScriptDesc = headerRow.createCell(MBTConstants.TEST_SCRIPT_DESCRIPTION_CELL_NUMBER);
+		testScriptDesc.setCellValue(MBTConstants.TEST_SCRIPT_DESCRIPTION);
+
+		testScriptDesc.setCellStyle(cellStyle);
+
+		Cell testStepNo = headerRow.createCell(MBTConstants.TEST_STEP_NO_CELL_NUMBER);
+		testStepNo.setCellValue(MBTConstants.TEST_STEP_NO);
+
+		testStepNo.setCellStyle(cellStyle);
+		
+		Cell testStepDesc = headerRow.createCell(MBTConstants.TEST_STEP_DESCRIPTION_CELL_NUMBER);
+		testStepDesc.setCellValue(MBTConstants.TEST_STEP_DESCRIPTION);
+
+		testStepDesc.setCellStyle(cellStyle);
+
+		Cell expectedResult = headerRow.createCell(MBTConstants.EXPECTED_RESULT_CELL_NUMBER);
+		expectedResult.setCellValue(MBTConstants.EXPECTED_RESULT);
+
+		expectedResult.setCellStyle(cellStyle);
+		int colnum = MBTConstants.TEST_STEP_NO_CELL_NUMBER;
+		System.out.println("Number of steps = "+flowchartSteps.get(fId).size());
+		// Auto size of the col. based on the text
+		for (int i=0;i<13;i++){
+			sheet.autoSizeColumn(i);
+		}
+		XSSFCellStyle cellStyleStep = workbook.createCellStyle();
+		cellStyleStep.setWrapText(true);
+		XSSFRow row = sheet.createRow(++rowCount);
+		
+		/*colnum = MBTConstants.TEST_CASE_ID_CELL_NUMBER;
+		XSSFCell cellTestCaseID = row.createCell(colnum);
+		cellTestCaseID.setCellValue(testcaseId);
+		cellTestCaseID.setCellStyle(cellStyleStep);
+		*/
+		
+		
+		colnum = MBTConstants.TEST_CASE_NAME_CELL_NUMBER;
+		XSSFCell cellTestCaseName = row.createCell(colnum);
+		cellTestCaseName.setCellValue(fileName);
+		cellTestCaseName.setCellStyle(cellStyleStep);
+		
+		colnum = MBTConstants.TEST_SCRIPT_NAME_CELL_NUMBER;
+		
+		XSSFCell cellScriptName = row.createCell(colnum);
+		cellScriptName.setCellValue(fileName);
+		cellScriptName.setCellStyle(cellStyleStep);
+	
+		
+		colnum = MBTConstants.TEST_SCRIPT_DESCRIPTION_CELL_NUMBER;
+		XSSFCell cellScriptDesc = row.createCell(colnum);
+		cellScriptDesc.setCellValue(fileName + "desc desc");
+		cellScriptDesc.setCellStyle(cellStyleStep);
+		
+		int stepCount = 1;
+		List<TestStep> steps = flowchartSteps.get(fId);
+		for (int i = 0; i < steps.size() ; i++) {
+			columnCount = 0;
+			colnum = MBTConstants.TEST_STEP_NO_CELL_NUMBER;
+			XSSFCell cellStepNumber = row.createCell(colnum);
+			// next ccol. write the step description
+			colnum = MBTConstants.TEST_STEP_DESCRIPTION_CELL_NUMBER;
+			TestStep step = steps.get(i);
+			cellStepNumber.setCellValue(stepCount++);
+			//cellStepNumber.setCellStyle(cellStyle);
+			XSSFCell cellStepDesc = row.createCell(colnum);
+			cellStepDesc.setCellValue(step.getDescription());
+			cellStepDesc.setCellStyle(cellStyleStep);
+			// here we get the validation id of a step and populate it with the validation rules.
+			if (step.getValidation_id() !=null && step.getValidation_id() != 0) {
+				List<String> rules = ValidationRuleDAO
+						.getAllValidationRuleforfield(step.getValidation_id());
+				// in the same col. as the step, write the validation rule
+				for (int j = 0; j < rules.size(); j++) {
+					XSSFRow validRow = sheet.createRow(++rowCount);
+					colnum = MBTConstants.TEST_STEP_NO_CELL_NUMBER;
+					 cellStepNumber = validRow.createCell(colnum);
+					 cellStepNumber.setCellValue(stepCount++);
+					 colnum = MBTConstants.TEST_STEP_DESCRIPTION_CELL_NUMBER;
+					 XSSFCell cellValidationDesc = validRow
+							.createCell(colnum);
+					cellValidationDesc.setCellValue(rules.get(j));
+					cellValidationDesc.setCellStyle(cellStyleStep);
+				}
+			}
+			row = sheet.createRow(++rowCount);
+			
+		}
+		}
+		//String fileNameTosave = req == null ? fileName:req.getFileName();
+		try (FileOutputStream outputStream = new FileOutputStream(
+				fileLocation+fileName+".xlsx")) {
+			workbook.write(outputStream);
+			System.out.println("writing to file");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch blocks
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+		
+		
+	}
 }
 

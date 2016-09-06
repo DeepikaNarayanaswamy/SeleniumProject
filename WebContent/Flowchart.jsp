@@ -12,18 +12,14 @@
 	  
   <%-- -1 is set when there is no parameter for the flowchart in the request --%>
   	
-	
+	 <div id='loader'><img src="images/ajax-loader.gif"/></div>
 	<div id = "dialog-form">
-	<div id="flowchart-extra" class = "hide">
+	<div id="flowchart-extra" class = "hide" title="Add Validation">
   		<h3>Add a Validation Field</h3>
 		  <div id = "validation-rules" class = "control-group">
 			
 		  </div>
-		  <h3>Add a web element</h3>
-		  <div>
-		    <p>Here a text box will come
-		    </p>
-		  </div>
+		  
 	</div>
 	</div>   	
   <body id="fh5co-work">
@@ -31,7 +27,7 @@
   			<div class = "row">
 				<ul class="nav nav-pills nav-stacked col-md-2">
 	  				<li><a href="TesterHomePage.jsp">Dashboard</a></li>
-					<li class="active"><a>Create Flowchart</a></li>
+					<li class="active"><a href="Flowchart.jsp">Create Flowchart</a></li>
 					<li><a href="#">Add Rule</a></li>
 				  	<li><a href="TMWorkspace.jsp">Workspace</a></li>
 				</ul>
@@ -45,13 +41,21 @@
 				      		<input id="f_title" class="col-md-6 form-control" placeholder="Name" type="text" name="f_title">
 						</div>
 						</div>
-						<div class = "row">
+						<div class = "row usecase">
 							<label for="f_usecase" class = "col-md-4">Usecase</label>
 				      		<div class="form-group ">
 								
 								<select id = "f_usecase" class="col-md-6 form-control"></select>
 							</div>
 						</div>
+						<div class = "row usecase_title hide">
+							<label for="f_usecase" class = "col-md-4">Usecase</label>
+				      		<div class="form-group ">
+				      			<input id="f_usecase_title" class="col-md-6 form-control" placeholder="Name" type="text" name="f_usecase_title">
+								
+							</div>
+						</div>
+						
 							<div class = "form-group">
 							    <button id="createButton" class = "btn btn-primary">Create New Flowchart</button>
 				    			<button id="mergeButton" class = "btn btn-primary">Merge New Flowchart</button>
@@ -75,7 +79,7 @@
         <div class="menu" id="menuContainer">
             <p style="text-align: center">Menu</p>
             <div class="menu_button_container">
-                <div class="button_add_task button menu_button">Add Task</div>
+                <div class="button_add_task button menu_button">Add Step</div>
                 <%-- Hiding decisison for now
                  <div class="button_add_decision button menu_button">Add Decision</div>--%>
             </div>
@@ -85,7 +89,7 @@
             <div class="ctrl_container">
                 <div class="button_remove">x</div>
             </div>
-            <div class="details_container">
+            <div class="details_container" oncontextmenu = "return false;">
                 <div class="detail_text" contenteditable="true">Enter text</div>
                  <span id="validation_container"></span>
             </div>
@@ -104,17 +108,23 @@
     </div>
   		</div>
   		
-				<div id = "merge_container" class = "hide">
-					<select id = "f_usecase_merge" class="col-md-4 form-control"></select>										
+				<div id = "merge_container" class = "hide col-md-4" >
+					<select id = "f_usecase_merge" class="form-control"></select>
+															
 <!-- 					<div>
 						<button onclick = "getFlowchartbyusecase()" id = "get_flowchart">Get flowcharts</button>
 					</div>
- -->				<ul id=  "flowchart_list" class = "col-md-4 connectedSortable">
+ -->				<ul id=  "flowchart_list" class = "col-md-6 connectedSortable">
+ 						List of flowcharts in usecase
  					</ul>
- 					<ul id = "merge_list" class = "col-md-4 connectedSortable" style = "height:50px;border:1px solid white">
+ 					<ul id = "merge_list" class = "col-md-6 connectedSortable" style = "height:auto;border:1px solid white">
+ 						List of flowcharts to be merged
  					</ul>
  					<button id="mergeAll" class = "btn btn-primary">Done,Merge</button>
+ 				</div>
 				</div>
+				<div class = "row">
+				
 			 </div>
 				<%-- <div class = "row">
 			      <div class = "col-md-4 text-center">

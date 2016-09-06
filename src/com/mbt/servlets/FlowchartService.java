@@ -1,5 +1,6 @@
 package com.mbt.servlets;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -15,13 +16,10 @@ import org.json.simple.JSONObject;
 import com.mbt.common.dao.ConfigDAO;
 import com.mbt.common.dao.FlowchartDAO;
 import com.mbt.common.dao.RequirementsDAO;
-import com.mbt.common.dao.SprintDAO;
 import com.mbt.common.dao.UsecaseDAO;
 import com.mbt.common.dtos.Flowchart;
 import com.mbt.common.dtos.Requirement;
-import com.mbt.common.dtos.Sprint;
 import com.mbt.common.dtos.TestStep;
-import com.mbt.common.dtos.Usecase;
 import com.mbt.helper.MBTHelper;
 
 @Path("/flowchart")
@@ -86,6 +84,27 @@ public class FlowchartService {
 		return FlowchartDAO.updateFlowchart(flowchart);
 	}
 	
+	@POST
+	@Path("/generateTestcase")
 	
+	public String generateTestCase(@QueryParam("flowchartIds")String flowchartIds,@QueryParam("testcaseName")String testcaseName){
+		//MBTHelper.writeTestCases(MBTHelper.getStepsFromFlowchartJSON(flowchart.getFlowchartJSON()), null, ConfigDAO.getFileLocation(),flowchart.getFlowchartName(),flowchart.getFlowchartId());
+		//return FlowchartDAO.updateFlowchart(flowchart);
+		System.out.println(flowchartIds);
+		System.out.println("testcasename:"+testcaseName);
+		String [] flowchartIdList = flowchartIds.split(",");
+		
+		HashMap<Integer,List>flowchartSteps = new HashMap<>();
+		for (int i=0;i<flowchartIdList.length;i++)
+		{
+			Flowchart f = FlowchartDAO.getFlowchart(Integer.parseInt(flowchartIdList[i]));
+			List<TestStep> steps = MBTHelper.getStepsFromFlowchartJSON(f.getFlowchartJSON());
+			flowchartSteps.put(Integer.parseInt(flowchartIdList[i]),steps);
+		}
+		MBTHelper.generateTestCase(flowchartSteps,ConfigDAO.getFileLocation(),testcaseName);
+		return "success";
+				
+	}
+
 	
 }

@@ -24,7 +24,7 @@ body {
 }
 
 a {
-  color: #52d3aa;
+  color: #fff;
   -webkit-transition: 0.5s;
   -o-transition: 0.5s;
   transition: 0.5s;
@@ -1016,6 +1016,7 @@ h1, h2, h3, h4, h5, h6 {
   height: 54px;
   font-size: 18px;
   font-weight: 400;
+  color:blue;
 }
 .form-control:active, .form-control:focus {
   outline: none;
@@ -1411,3 +1412,31 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /*# sourceMappingURL=style.css.map */
+.name{
+	color:#fff;
+	float:right;
+}
+#f_title,#f_usecase_title,#f_usecase,#f_usecase_merge{
+	color:#fff;
+}
+ul li{
+	list-style:none;
+}
+.connectedSortable{
+	margin-top:10px;
+	color:#fff;
+}
+#loader{
+	position:relative;
+	top:200px;
+	left:600px;
+}
+.flist{
+	background-color: #fff;
+    color: blue;
+    padding: 10px;
+    margin-top:10px;
+}
+option{
+	background-color:#52d3aa;
+}

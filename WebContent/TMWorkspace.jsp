@@ -1,5 +1,6 @@
 <%@ include file="header.jsp" %>
 <body id = "fh5co-work" data-section="home" data-stellar-background-ratio="0.5">
+<div id='loader'><img src="images/ajax-loader.gif"/></div>
 <div class="gradient"></div>
 	<div class="container">
 	<div class = "row">
@@ -24,14 +25,29 @@
 					<div class="row">
 						<div id = "usecase_container">
 						</div>
-						<ul id = "flowchartusecase_container" class = "clearfix">
+						
+						<ul id = "flowchartusecase_container" class = "col-md-6">
+							<span class="listing hide">	List of Flowcharts</span>
 						</ul>
-						<div id = "flowchart_area"></div>
+						<div id = "flowchart_area hide" class = "col-md-6">
+							<button id = "generate_testcase" class = "btn btn-primary">Generate Testcase</button>
+						</div>
 					</div>
 				
 			</div>
 	</div>
 	</div>
+	<div id = "testcase-form" class = "hide">
+		<form>
+			<label for="f_title" class = "col-md-4">Testcase Name</label>
+			 <div class = "form-group">
+						<input id="f_testcase_name" class="col-md-6 form-control" placeholder="Name" type="text" name="f_testcase_name">
+			</div>
+			
+		</form>
+		
+	</div>   	
+	
 <script type="text/javascript">
 	
 	$(document).ready(function(){

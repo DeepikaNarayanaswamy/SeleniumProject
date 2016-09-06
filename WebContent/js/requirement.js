@@ -4,6 +4,15 @@ requirementsArray = [];
 validationArray = [];
 var globalUseCases = [];
 var hot1;
+jQuery.ajaxSetup({
+	  beforeSend: function() {
+	     $('#loader').show();
+	  },
+	  complete: function(){
+	     $('#loader').hide();
+	  },
+	  success: function() {}
+	});
 // This function is specific to initialize the steps to demo part
 // It also gets the next req id
 
@@ -105,7 +114,7 @@ function saveRequirement(){
 		contentType:"application/json;charset=utf-8",
 		data:JSON.stringify(req),
 		success:function(response){
-			alert (response);
+			alert ("Saved successfully ");
 			// load the requirements again
 			requirements = getAllRequirements();
 			
@@ -115,7 +124,7 @@ function saveRequirement(){
 		error: function(error){
 			console.log(error);
 			refreshStepArea();
-			alert (error.responseText);
+//			alert (error.responseText);
 		} 
 	});
 }

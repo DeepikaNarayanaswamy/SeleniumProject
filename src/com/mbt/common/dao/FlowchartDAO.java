@@ -72,6 +72,7 @@ public class FlowchartDAO {
 			if (rs.next()){
 				flowchart.setFlowchartName(rs.getString(1));
 				flowchart.setFlowchartJSON(rs.getString(2));
+				flowchart.setUsecaseId(rs.getInt(3));
 			}
 		
 		}catch(SQLException ex){

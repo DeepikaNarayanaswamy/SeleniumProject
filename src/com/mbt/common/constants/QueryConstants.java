@@ -23,7 +23,9 @@ public class QueryConstants {
 	public static final String COL_SPRINT_ID = "SPRINT_ID";
 	public static final String GET_REQUIRMENT_BY_NAME = "SELECT ID,TITLE FROM testmodulate.REQUIREMENT WHERE TITLE LIKE ?";
 	public static final String INSERT_FLOWCHART = "INSERT INTO testmodulate.FLOWCHART (FLOWCHART_NAME,FLOWCHART_JSON,REQ_ID) VALUES (?,?,?);";
-	public static final String GET_FLOWCHART = "SELECT FLOWCHART_NAME,FLOWCHART_JSON FROM testmodulate.FLOWCHART where id = ?";
+	public static final String GET_FLOWCHART = "SELECT FLOWCHART_NAME,FLOWCHART_JSON,FU.usecase_id FROM testmodulate.FLOWCHART  F "+
+							" inner join testmodulate.flowchart_usecase_mapping FU "+ 
+							" on (F.id = FU.flowchart_id) where F.id = ? ";
 	public static final String UPDATE_FLOWCHART = "UPDATE testmodulate.FLOWCHART set FLOWCHART_JSON = ? WHERE id = ?";
 	public static final String GET_USECASES = "SELECT id,name from  testmodulate.USECASE";
 	public static final String INSERT_FLOWCHART_USECASE = "INSERT INTO testmodulate.flowchart_usecase_mapping (flowchart_id,usecase_id) VALUES (?,?)";

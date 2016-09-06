@@ -100,7 +100,8 @@ jsPlumb.ready(function () {
 		loadFlowchart();
 	});
 
-	$('#updateButton').click(function(){
+	$('#updateButton').click(function(e){
+		e.preventDefault();
 		updateFlowchart();
 	});
 	$("#mergeButton").click(function(e){
@@ -191,13 +192,13 @@ function addTask(id,posx,posy,text,validationId){
 		      width: 700,
 		      modal: true,
 		      buttons: {
-		        "Save": function(){saveFlowchartDetails()},
+		        "Save": function(){saveFlowchartDetails(); dialog.dialog( "close" );},
 		        Cancel: function() {
 		          dialog.dialog( "close" );
 		        }
 		      },
 		      close: function() {
-		        
+		    	  dialog.dialog( "close" );
 		        
 		      }
 		    });
@@ -351,7 +352,7 @@ function getFlowchartJSON(){
 		return flowChartJson;
 }
 // This function saves the new flowchart to db.
-function createFlowchart(flowcharJson){
+function createFlowchart(flowcharJson,usecaseId){
 	var flowchart = {};
 	flowchart["flowchartName"] =  $("#f_title").val();
 	if (flowcharJson == undefined)
@@ -360,7 +361,11 @@ function createFlowchart(flowcharJson){
 		flowchart["flowchartJSON"] = flowcharJson;
 		
 	flowchart["requirementId"] = null;
-	flowchart["usecaseId"] = $("#f_usecase").val();
+	// during merge flow, we will not take the usecase. By default it will be saved in usecase 100
+	if (usecaseId == undefined || usecaseId == null )
+		flowchart["usecaseId"] = $("#f_usecase").val();
+	else
+		flowchart["usecaseId"] = 100;
 	$.ajax({
 		url:"rest/flowchart/save",
 		type:"POST",
@@ -413,6 +418,7 @@ function loadFlowchart(flowchartId){
 	$("#createButton").addClass ("hide");
 	$("#mergeButton").addClass ("hide");
 	$("#updateButton").removeClass("hide");
+	$(".usecase").addClass ("hide");
 	// Get teh flowchartID from URL
 	//flowchartId = getParameterByName("flowchartId");
 		if (flowchartId != null && flowchartId != undefined)
@@ -424,6 +430,18 @@ function loadFlowchart(flowchartId){
 						if (response != null){
 							flowchartJSON = response.flowchartJSON;
 							$("#f_title").val(response.flowchartName);
+							if (response.usecaseId != null || response.usecaseId != undefined )
+							{
+								$(".usecase_title").removeClass("hide");
+								for (i=0;i<globalUseCases.length;i++){
+									if (globalUseCases[i].id == response.usecaseId )
+										{
+										$("#f_usecase_title").val(globalUseCases[i].name);
+										break;
+										}
+								}
+								
+							}
 							console.log(response.flowchartName);
 							drawFlowchart(flowchartJSON);
 							
@@ -497,14 +515,14 @@ function updateFlowchart(flowchartId,flowcharJson){
 		contentType:"application/json;charset=utf-8",
 		data:JSON.stringify(flowchart),
 		success:function(response){
-			alert (response.status);
+			alert ("Updated Successfully");
 			console.log(response);
 			
 		},
 		error: function(error){
 			console.log(error);
 			
-			alert (error.responseText);
+		//	alert (error.responseText);
 		} 
 	});
 }
@@ -518,9 +536,11 @@ function repositionElement(id, posX, posY){
 function merge(){
 	var i;
 	$("#merge_container").removeClass("hide");
+	$(".usecase").addClass("hide");
 	$(".flowchartArea").hide();
 	usecase = $("#f_usecase_merge");
 	$(usecase).empty();
+	usecase.append($("<option />").val(-1).text("Select"));
 	for (i=0;i<usecases.length;i++){
 		
 		usecase.append($("<option />").val(usecases[i].id).text(usecases[i].name));
@@ -572,9 +592,9 @@ function getFlowchartbyusecase(usecaseId){
 }
 
 function showFlowchartUsecaselist (flowchartUsecases){
-	
-if (flowchartUsecases.length != 0){
 	$("#flowchart_list").empty();
+if (flowchartUsecases.length != 0){
+	
 		for (i=0;i<flowchartUsecases.length;i++){
 			//var u_fc_list = document.createElement("div");
 			
@@ -649,6 +669,7 @@ function getFinalJson(teststeps){
 	// here we need to check if a flowchart is drawn. if so then take that also.
 	var startPosx = 100;
 	var startPosy = 100;
+	var line =1;
 			var flowchart = {};
 			
 	var		 nodes = []
@@ -671,7 +692,22 @@ function getFinalJson(teststeps){
 				
 				nodeObject.positionX =  startPosx;
 				nodeObject.positionY =  startPosy;
-				startPosx+=200;
+				//startPosx+=200;
+				// show max five steps in one line
+				if (i !=0 && i%3 == 0)
+					
+				{	startPosy +=200;
+					if (line%2 != 0)
+						startPosx-=220;
+					line++;
+				}else
+					{
+					
+						if (line %2 == 0)
+							startPosx-=220;
+						else
+							startPosx+=220;
+					}
 				nodes.push(nodeObject);
 				
 				
@@ -700,7 +736,8 @@ function getFinalJson(teststeps){
 			console.log(flowchart);
 			$("#startpoint").remove();
 			$("#endpoint").remove();
-			createFlowchart(JSON.stringify(flowchart));
+			// for merge defaultusecase id is passed
+			createFlowchart(JSON.stringify(flowchart),100);
 }
 // This functoin is used to add the validations to the accordion
 function addValidation(){
@@ -744,3 +781,4 @@ function getAllValidations(){
 	
 	return validations;
 }
+

@@ -1,3 +1,12 @@
+jQuery.ajaxSetup({
+	  beforeSend: function() {
+	     $('#loader').show();
+	  },
+	  complete: function(){
+	     $('#loader').hide();
+	  },
+	  success: function() {}
+	});
 TMWorkspace = {
  flowchartUsecases : [],
 	loadUsecases : function(){
@@ -17,7 +26,9 @@ TMWorkspace = {
 					});
 					$(container).append(usecasebox);
 				}
-
+			$("#generate_testcase").click(function(){
+				TMWorkspace.generateTestcase();
+			});
 	},
 
 	getFlowchartbyusecase :function (usecaseId){
@@ -53,6 +64,8 @@ TMWorkspace = {
 },
 	showFlowchartUsecaselist  : function(usecaseId){
 		flist = $("#flowchartusecase_container");
+		$("#flowchart_area").removeClass("hide");
+		$(".listing").removeClass("hide");
 		$(flist).empty();
 		usecaseTitle = document.createElement('span');
 		// here we need to set the title fo the usecase cleicked
@@ -69,12 +82,51 @@ TMWorkspace = {
 			console.log(flowcharts[j]);
 			$(flistItem).attr('id',"uf_"+usecaseId+"_"+flowcharts[j].flowchartId);
 			$(flistItem).text(flowcharts[j].flowchartName);
-			$(flistItem).addClass('pointer');
+			$(flistItem).addClass('pointer flist');
 			$(flistItem).click(function(){ // when #showhidecomment is clicked
 		        window.location.href = "Flowchart.jsp?flowchartId="+this.id.split('_')[2]; // load the sample.jsp page in the #chkcomments element
 		    }); 
 			$(flist).append(flistItem);
-		}
-	}
-	
+		};
+	},
+
+ generateTestcase:function(){
+	 var flowchartids = [];
+	 $.each($("#flowchartusecase_container").children(),function(){
+		 flowchartids.push(this.id.split('_')[2]);
+	 });
+	 $( "#testcase-form").removeClass("hide");
+	 dialog = $( "#testcase-form" ).dialog({
+			   height: 400,
+		      width: 700,
+		      modal: true,
+		      buttons: {
+		        "Save": function(){
+		        	
+
+		       	 $.ajax({
+		       			url:"rest/flowchart/generateTestcase?testcaseName="+$("#f_testcase_name").val()+"&flowchartIds="+flowchartids,
+		       			type:"POST",
+		       			success:function(response){
+		       				console.log("success");
+		       			},
+		       			error: function(error){
+		       			} 
+		       		});
+		        	
+		        	
+		        },
+		        Cancel: function() {
+		          dialog.dialog( "close" );
+		        }
+		      },
+		      close: function() {
+		        
+		        
+		      }
+		    });
+	 
+	 
+	 
+ }
 };
