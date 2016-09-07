@@ -11,7 +11,7 @@
   </head>
 	  
   <%-- -1 is set when there is no parameter for the flowchart in the request --%>
-  	
+	
 	 <div id='loader'><img src="images/ajax-loader.gif"/></div>
 	<div id = "dialog-form">
 	<div id="flowchart-extra" class = "hide" title="Add Validation">
@@ -31,7 +31,14 @@
 					<li><a href="#">Add Rule</a></li>
 				  	<li><a href="TMWorkspace.jsp">Workspace</a></li>
 				</ul>
-				
+				<div class="alert alert-success fade in hide col-md-4 col-md-offset-4">
+			    	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			    	<strong>Success!</strong> <span></span>
+			  </div>
+			  		<div class="alert alert-danger fade in hide col-md-4 col-md-offset-4">
+			    		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			    		<strong>Error!</strong> 
+			  		</div>  				
 				 <div class = "col-md-6 text-center col-md-offset-2">
 				      	<form class = "form-inline">
 				      	<div class = "row">
@@ -107,25 +114,32 @@
     </div>
     </div>
   		</div>
-  		
-				<div id = "merge_container" class = "hide col-md-4" >
-					<select id = "f_usecase_merge" class="form-control"></select>
-															
+  				
+				<div id = "merge_container" class = "hide  col-md-offset-3" >
+					<div class = "row">
+						<div class = " col-md-6">
+							Select the usecase:
+							<select id = "f_usecase_merge" class="form-control"></select>
+						</div>
+					</div>
+					<div class = "row col-md-10">
+						
+						<ul id=  "flowchart_list" class = "col-md-6 connectedSortable">
+	 			
+	 					</ul>
+	 					<ul id = "merge_list" class = "col-md-4 connectedSortable" style = "height:auto;border:1px solid white">
+	 						List of flowcharts to be merged
+	 					</ul>
+	 					<button id="mergeAll" class = "btn btn-primary">Done,Merge</button>
+	 				
+				
+			 		</div>
+									
 <!-- 					<div>
 						<button onclick = "getFlowchartbyusecase()" id = "get_flowchart">Get flowcharts</button>
 					</div>
- -->				<ul id=  "flowchart_list" class = "col-md-6 connectedSortable">
- 						List of flowcharts in usecase
- 					</ul>
- 					<ul id = "merge_list" class = "col-md-6 connectedSortable" style = "height:auto;border:1px solid white">
- 						List of flowcharts to be merged
- 					</ul>
- 					<button id="mergeAll" class = "btn btn-primary">Done,Merge</button>
- 				</div>
-				</div>
-				<div class = "row">
+ -->					</div>
 				
-			 </div>
 				<%-- <div class = "row">
 			      <div class = "col-md-4 text-center">
 				      	<form>

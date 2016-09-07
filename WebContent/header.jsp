@@ -1,6 +1,7 @@
 <html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page session="true" %>
+<%@ page isELIgnored ="false" %>
 <head>
 
 	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans">
@@ -13,7 +14,7 @@
 <script src="js/jsPlumb-2.1.4-min.js"></script>
 <script src = "js/flowchart.js"></script>
 <script src = "assets/js/util.js"></script>
-
+<script src = "js/bootstrap.js"></script>
 <link rel="stylesheet" href="css/styles.css">
 <link rel="stylesheet" href="css/font-awesome.css">
 <link data-jsfiddle="common" rel="stylesheet" media="screen" href="dist/pikaday/pikaday.css">
@@ -68,7 +69,10 @@
 		         
 	 			</div>
 	 			<span id = "name" class = "name">
-		 			Welcome <%= session.getAttribute("username") %></span>
+	 				 <c:if test = "${not empty sessionScope.username}">
+	 				 	Welcome ${sessionScope.username}
+	 				 </c:if>
+		 			
 		         
 		        </nav>
 			  <!-- </div> -->

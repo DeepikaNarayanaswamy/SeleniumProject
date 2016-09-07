@@ -515,11 +515,12 @@ function updateFlowchart(flowchartId,flowcharJson){
 		contentType:"application/json;charset=utf-8",
 		data:JSON.stringify(flowchart),
 		success:function(response){
-			alert ("Updated Successfully");
+			$(".alert-success").removeClass("hide");
 			console.log(response);
 			
 		},
 		error: function(error){
+			$(".alert-danger").removeClass("hide");
 			console.log(error);
 			
 		//	alert (error.responseText);
@@ -577,7 +578,7 @@ function getFlowchartbyusecase(usecaseId){
 					usecase.usecaseId = response[0].usecaseId;
 					usecase.flowcharts = response
 					flowchartUsecases.push(usecase);
-					showFlowchartUsecaselist(flowchartUsecases);
+					showFlowchartUsecaselist(flowchartUsecases,response[0].usecaseId);
 					
 				}
 			},
@@ -591,11 +592,17 @@ function getFlowchartbyusecase(usecaseId){
 	
 }
 
-function showFlowchartUsecaselist (flowchartUsecases){
-	$("#flowchart_list").empty();
-if (flowchartUsecases.length != 0){
+function showFlowchartUsecaselist (flowchartUsecases,usecaseId){
 	
-		for (i=0;i<flowchartUsecases.length;i++){
+if (flowchartUsecases.length != 0){
+		
+			for (i=0;i<flowchartUsecases.length;i++){
+				if (flowchartUsecases[i].usecaseId == usecaseId){
+					fUsecases = flowchartUsecases[i];
+					break;
+				}
+			}
+		
 			//var u_fc_list = document.createElement("div");
 			
 			var usecaseName = document.createElement("span");
@@ -608,20 +615,22 @@ if (flowchartUsecases.length != 0){
 					}
 			}*/
 			//$(u_fc_list).append(usecaseName);
-			for (j=0;j<flowchartUsecases[i].flowcharts.length;j++){
+			$("#flowchart_list").empty();
+			for (j=0;j<fUsecases.flowcharts.length;j++){
 				
-				var fl_list_item = $('<li name="u_fc" class = "ui-state-default" value ='+flowchartUsecases[i].usecaseId+"_"+flowchartUsecases[i].flowcharts[j].flowchartId+'/>');
-				fl_list_item.text( flowchartUsecases[i].flowcharts[j].flowchartName);
-				//$(usecaseCheckbox).attr("value",flowchartUsecases[i].usecaseId + "_"+flowchartUsecases[i].flowcharts[j].flowchartId);
-				
-				$("#flowchart_list").removeClass("hide");
-				$("#flowchart_list").append(fl_list_item);
-				//$(u_fc_list).append(usecaseCheckbox).append();
-				
+					if (usecaseId == fUsecases.usecaseId){
+					var fl_list_item = $('<li name="u_fc" class = "ui-state-default" value ='+fUsecases.usecaseId+"_"+fUsecases.flowcharts[j].flowchartId+'/>');
+					fl_list_item.text( fUsecases.flowcharts[j].flowchartName);
+					//$(usecaseCheckbox).attr("value",flowchartUsecases[i].usecaseId + "_"+flowchartUsecases[i].flowcharts[j].flowchartId);
+					
+					$("#flowchart_list").removeClass("hide");
+					$("#flowchart_list").append(fl_list_item);
+					//$(u_fc_list).append(usecaseCheckbox).append();
+				}
 			}
 			//;
 		}
-	}
+	
 
 }
 
@@ -696,17 +705,18 @@ function getFinalJson(teststeps){
 				// show max five steps in one line
 				if (i !=0 && i%3 == 0)
 					
-				{	startPosy +=200;
-					if (line%2 != 0)
-						startPosx-=220;
+				{	
 					line++;
+					startPosy +=200;
+					
+					
 				}else
 					{
 					
 						if (line %2 == 0)
-							startPosx-=220;
+							startPosx-=200;
 						else
-							startPosx+=220;
+							startPosx+=200;
 					}
 				nodes.push(nodeObject);
 				

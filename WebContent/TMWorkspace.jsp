@@ -1,6 +1,15 @@
 <%@ include file="header.jsp" %>
 <body id = "fh5co-work" data-section="home" data-stellar-background-ratio="0.5">
 <div id='loader'><img src="images/ajax-loader.gif"/></div>
+<div class="alert alert-success fade in hide col-md-4 col-md-offset-4">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Success!</strong> The Testcases are generated.
+  </div>
+  <div class="alert alert-danger fade in hide col-md-4 col-md-offset-4">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Error!</strong> 
+  </div>
+  
 <div class="gradient"></div>
 	<div class="container">
 	<div class = "row">
@@ -37,15 +46,15 @@
 			</div>
 	</div>
 	</div>
-	<div id = "testcase-form" class = "hide">
+	<div id = "testcase-form" class = "hide" title = "Save Testcase">
 		<form>
-			<label for="f_title" class = "col-md-4">Testcase Name</label>
+			Testcase Name
 			 <div class = "form-group">
 						<input id="f_testcase_name" class="col-md-6 form-control" placeholder="Name" type="text" name="f_testcase_name">
 			</div>
 			
 		</form>
-		
+			
 	</div>   	
 	
 <script type="text/javascript">

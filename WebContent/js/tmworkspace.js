@@ -102,27 +102,29 @@ TMWorkspace = {
 		      modal: true,
 		      buttons: {
 		        "Save": function(){
-		        	
+		        	dialog.dialog( "close" );	
 
 		       	 $.ajax({
 		       			url:"rest/flowchart/generateTestcase?testcaseName="+$("#f_testcase_name").val()+"&flowchartIds="+flowchartids,
 		       			type:"POST",
 		       			success:function(response){
 		       				console.log("success");
+		       				$(".alert-success").removeClass("hide");
 		       			},
 		       			error: function(error){
+		       				$(".alert-danger").removeClass("hide");
 		       			} 
 		       		});
-		        	
+		       	 
 		        	
 		        },
 		        Cancel: function() {
-		          dialog.dialog( "close" );
+		        	dialog.dialog( "close" ); 
 		        }
 		      },
 		      close: function() {
 		        
-		        
+		    	  dialog.dialog( "close" );
 		      }
 		    });
 	 
