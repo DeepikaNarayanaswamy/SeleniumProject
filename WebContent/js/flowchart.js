@@ -188,8 +188,8 @@ function addTask(id,posx,posy,text,validationId){
 			open: function( event, ui ) {
 				addValidation();
 				},
-		      height: 400,
-		      width: 700,
+		      height: 500,
+		      width: 500,
 		      modal: true,
 		      buttons: {
 		        "Save": function(){saveFlowchartDetails(); dialog.dialog( "close" );},
@@ -372,7 +372,7 @@ function createFlowchart(flowcharJson,usecaseId){
 		contentType:"application/json;charset=utf-8",
 		data:JSON.stringify(flowchart),
 		success:function(response){
-			
+			$(".alert-success").removeClass("hide");
 			$("#saveButton").addClass("hide");
 			$("#updateButton").removeClass("hide");
 			console.log("success after saving"+response);

@@ -65,7 +65,7 @@
 		        <div class="navbar-header">
 		        	<!-- Mobile Toggle Menu Button -->
 					<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><i></i></a>
-		         <a class="navbar-brand" href="login.jsp">Test Art</a>
+		         <a class="navbar-brand" href="login.jsp">Test Frame</a>
 		         
 	 			</div>
 	 			<span id = "name" class = "name">

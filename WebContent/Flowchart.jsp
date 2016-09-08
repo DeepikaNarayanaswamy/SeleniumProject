@@ -31,11 +31,11 @@
 					<li><a href="#">Add Rule</a></li>
 				  	<li><a href="TMWorkspace.jsp">Workspace</a></li>
 				</ul>
-				<div class="alert alert-success fade in hide col-md-4 col-md-offset-4">
+				<div class="alert alert-success fade in hide col-md-2 col-md-offset-4">
 			    	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			    	<strong>Success!</strong> <span></span>
+			    	<strong>Success! The flowchart is saved</strong> <span></span>
 			  </div>
-			  		<div class="alert alert-danger fade in hide col-md-4 col-md-offset-4">
+			  		<div class="alert alert-danger fade in hide col-md-2 col-md-offset-4">
 			    		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 			    		<strong>Error!</strong> 
 			  		</div>  				

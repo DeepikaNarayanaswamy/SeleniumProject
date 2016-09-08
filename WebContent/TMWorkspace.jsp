@@ -1,14 +1,6 @@
 <%@ include file="header.jsp" %>
 <body id = "fh5co-work" data-section="home" data-stellar-background-ratio="0.5">
 <div id='loader'><img src="images/ajax-loader.gif"/></div>
-<div class="alert alert-success fade in hide col-md-4 col-md-offset-4">
-    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Success!</strong> The Testcases are generated.
-  </div>
-  <div class="alert alert-danger fade in hide col-md-4 col-md-offset-4">
-    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Error!</strong> 
-  </div>
   
 <div class="gradient"></div>
 	<div class="container">
@@ -19,6 +11,15 @@
 			  <li><a href="#">Add Rule</a></li>
 			  <li class="active"><a>Workspace</a></li>
 		</ul>
+		<div class="alert alert-success fade in hide col-md-2 col-md-offset-4">
+			    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			    <strong>Success!</strong> The Testcases are generated.
+			  </div>
+			  <div class="alert alert-danger fade in hide col-md-4 col-md-offset-4">
+			    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			    <strong>Error!</strong> 
+		</div>
+		
 			<div class="col-md-8 text-wrap col-md-offset-1">
 				<div class="row">
 					<div class="col-md-12 section-heading text-center">

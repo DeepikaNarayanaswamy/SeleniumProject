@@ -1440,3 +1440,8 @@ ul li{
 option{
 	background-color:#52d3aa;
 }
+#validation-rules{
+display: inline-block;
+width: 100%;
+height:auto;
+}
